@@ -5,148 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
     <link rel="icon" type="image/png" href="https://cdn.bio.link/uploads/profilealso_pictures/2025-04-23/KIyjnGulLHDzGoQ4C7CxfjLZ15tSoAAO.png">
-
-    <!-- Include Quicksand Font -->
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
-
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            background: #eaeaea;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            transition: background-image 0.4s;
-        }
-        iframe {
-            border: none;
-            width: 200px;
-            flex: 1;
-        }
-        #countdown {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: #f0f8ff;
-            border: 2px solid #3498db;
-            border-radius: 15px;
-            padding: 10px 20px;
-            font-family: 'Quicksand', Arial, sans-serif;
-            font-size: 14px;
-            color: #333;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            text-align: center;
-        }
-        #things-to-do {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            width: 200px;
-            height: 200px;
-            background-color: #ffffff;
-            border: 2px solid #3498db;
-            border-radius: 10px;
-            padding: 10px;
-            font-family: 'Quicksand', Arial, sans-serif;
-            font-size: 14px;
-            color: #333;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            resize: none;
-            z-index: 1000;
-        }
-        #event-countdowns {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 250px;
-            background-color: #f8f9fa;
-            border: 2px solid #e67e22;
-            border-radius: 15px;
-            padding: 16px 18px;
-            font-family: 'Quicksand', Arial, sans-serif;
-            font-size: 15px;
-            color: #333;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.08);
-            z-index: 1000;
-        }
-        #event-countdowns h3 {
-            margin: 0 0 10px 0;
-            font-size: 16px;
-            color: #e67e22;
-        }
-        #event-countdowns ul {
-            list-style-type: none;
-            padding-left: 0;
-            margin: 0;
-        }
-        #event-countdowns li {
-            margin-bottom: 8px;
-        }
-        #bgPopup, #birthdayPopup {
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-        }
-        #bgPopupContent, #birthdayPopupContent {
-            background: #fff;
-            padding: 22px 30px 18px 30px;
-            border-radius: 18px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.18);
-            text-align: center;
-            min-width: 280px;
-        }
-        #bgPopupContent input[type="text"], #birthdayPopupContent select {
-            width: 95%;
-            padding: 8px;
-            border: 1.5px solid #3498db;
-            border-radius: 8px;
-            font-size: 15px;
-            margin-bottom: 14px;
-        }
-        #bgPopupContent button, #birthdayPopupContent button {
-            background: #3498db;
-            border: none;
-            color: white;
-            padding: 8px 24px;
-            border-radius: 8px;
-            font-size: 15px;
-            cursor: pointer;
-            margin-right: 8px;
-        }
-        #bgPopupContent button:last-child, #birthdayPopupContent button:last-child {
-            background: #e74c3c;
-        }
-        #change-background-button {
-            position: fixed;
-            left: 0px;
-            top: 20px;
-            z-index: 1100;
-            padding: 10px 16px;
-            border-radius: 8px;
-            background: #f6f6f6;
-            border: 2px solid #3498db;
-            font-family: 'Quicksand', Arial, sans-serif;
-            font-size: 13px;
-            color: #3498db;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        #change-background-button:hover {
-            background: #eaf6fb;
-        }
+        body { margin: 0; padding: 0; height: 100vh; display: flex; flex-direction: column; background: #eaeaea;
+        background-size: cover; background-position: center; background-repeat: no-repeat; transition: background-image 0.4s; }
+        iframe { border: none; width: 200px; flex: 1; }
+        #countdown { position: fixed; top: 20px; right: 20px; background-color: #f0f8ff; border: 2px solid #3498db;
+        border-radius: 15px; padding: 10px 20px; font-family: 'Quicksand', Arial, sans-serif; font-size: 14px; color: #333;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); z-index: 1000; text-align: center;}
+        #things-to-do { position: fixed; top: 80px; right: 20px; width: 200px; height: 200px; background-color: #fff;
+        border: 2px solid #3498db; border-radius: 10px; padding: 10px; font-family: 'Quicksand', Arial, sans-serif;
+        font-size: 14px; color: #333; box-shadow: 0 4px 6px rgba(0,0,0,0.1); resize: none; z-index: 1000;}
+        #event-countdowns { position: fixed; bottom: 20px; right: 20px; width: 250px; background-color: #f8f9fa;
+        border: 2px solid #e67e22; border-radius: 15px; padding: 16px 18px; font-family: 'Quicksand', Arial, sans-serif;
+        font-size: 15px; color: #333; box-shadow: 0 4px 6px rgba(0,0,0,0.08); z-index: 1000;}
+        #event-countdowns h3 { margin: 0 0 10px 0; font-size: 16px; color: #e67e22;}
+        #event-countdowns ul { list-style-type: none; padding-left: 0; margin: 0;}
+        #event-countdowns li { margin-bottom: 8px;}
+        #bgPopup, #birthdayPopup { position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 2000;}
+        #bgPopupContent, #birthdayPopupContent { background: #fff; padding: 22px 30px 18px 30px; border-radius: 18px;
+        box-shadow: 0 4px 24px rgba(0,0,0,0.18); text-align: center; min-width: 280px;}
+        #bgPopupContent input[type="text"], #birthdayPopupContent select { width: 95%; padding: 8px; border: 1.5px solid #3498db;
+        border-radius: 8px; font-size: 15px; margin-bottom: 14px;}
+        #bgPopupContent button, #birthdayPopupContent button { background: #3498db; border: none; color: white; padding: 8px 24px;
+        border-radius: 8px; font-size: 15px; cursor: pointer; margin-right: 8px;}
+        #bgPopupContent button:last-child, #birthdayPopupContent button:last-child { background: #e74c3c;}
+        #change-background-button { position: fixed; left: 0px; top: 20px; z-index: 1100; padding: 10px 16px; border-radius: 8px;
+        background: #f6f6f6; border: 2px solid #3498db; font-family: 'Quicksand', Arial, sans-serif; font-size: 13px; color: #3498db;
+        cursor: pointer; transition: background 0.2s;}
+        #change-background-button:hover { background: #eaf6fb;}
     </style>
 </head>
 <body>
-    <!-- Button to change background -->
     <button id="change-background-button" title="Change background">🖼️ Change Background</button>
 
     <!-- Popup for entering image link -->
@@ -160,7 +51,6 @@
             <div id="bgUrlError" style="color: red; font-size:12px; margin-top:10px;"></div>
         </div>
     </div>
-
     <!-- Popup for entering birthday MONTH and DAY only -->
     <div id="birthdayPopup" style="display:none;">
         <div id="birthdayPopupContent">
@@ -197,13 +87,83 @@
     <iframe class="bio-link" src="https://bio.link/alpha_jr" title="Bio Link"></iframe>
     <div id="event-countdowns">
         <h3>Upcoming Events</h3>
-        <ul>
-            <li id="christmas-countdown"></li>
-            <li id="birthday-countdown"></li>
-            <li id="schoolend-countdown"></li>
-        </ul>
+        <ul id="holiday-events"></ul>
     </div>
     <script>
+        // US Holiday List Generator (static for most holidays, calculated for some)
+        function getUSHolidays(year) {
+            // Returns { name, date } array for US holidays (can adjust or extend)
+            // Date objects: Months are 0-based (Jan=0, Dec=11)
+            const holidays = [
+                { name: "🎄 Christmas Day", date: new Date(year, 11, 25) },
+                { name: "🎉 New Year's Day", date: new Date(year + 1, 0, 1) },
+                { name: "🛑 Martin Luther King Jr Day", date: mlkDay(year + 1) }, // 3rd Monday of Jan
+                { name: "🇺🇸 Presidents Day", date: presidentsDay(year + 1) }, // 3rd Monday of Feb
+                { name: "🐰 Easter", date: easter(year + 1) },
+                { name: "🌷 Memorial Day", date: memorialDay(year + 1) }, // Last Monday in May
+                { name: "🎆 Independence Day", date: new Date(year + 1, 6, 4) },
+                { name: "🍁 Labor Day", date: laborDay(year + 1) }, // 1st Monday of Sept
+                { name: "🦃 Thanksgiving", date: thanksgiving(year + 1) }, // 4th Thursday of Nov
+            ];
+            // For December 26-31, show Christmas for "this year"; for January 1+, show next holiday for "next year"
+            return holidays;
+        }
+        // Helper functions for holidays with variable date
+        function mlkDay(year) {
+            return nthWeekdayOfMonth(year, 0, 1, 3); // January, Monday, 3rd
+        }
+        function presidentsDay(year) {
+            return nthWeekdayOfMonth(year, 1, 1, 3); // February, Monday, 3rd
+        }
+        function memorialDay(year) {
+            return lastWeekdayOfMonth(year, 4, 1); // May, Monday
+        }
+        function laborDay(year) {
+            return nthWeekdayOfMonth(year, 8, 1, 1); // September, Monday, 1st
+        }
+        function thanksgiving(year) {
+            return nthWeekdayOfMonth(year, 10, 4, 4); // November, Thursday, 4th
+        }
+        // General nth weekday helper
+        function nthWeekdayOfMonth(year, month, weekday, n) {
+            let date = new Date(year, month, 1);
+            let count = 0;
+            while (date.getMonth() === month) {
+                if (date.getDay() === weekday) {
+                    count++;
+                    if (count === n) return date;
+                }
+                date.setDate(date.getDate() + 1);
+            }
+            return null;
+        }
+        function lastWeekdayOfMonth(year, month, weekday) {
+            let date = new Date(year, month + 1, 0); // Last day of month
+            while (date.getDay() !== weekday) {
+                date.setDate(date.getDate() - 1);
+            }
+            return date;
+        }
+        // Easter calculation (computus, valid for years 1900-2099)
+        function easter(year) {
+            // Anonymous Gregorian
+            var a = year % 19;
+            var b = Math.floor(year / 100);
+            var c = year % 100;
+            var d = Math.floor(b / 4);
+            var e = b % 4;
+            var f = Math.floor((b + 8) / 25);
+            var g = Math.floor((b - f + 1) / 3);
+            var h = (19 * a + b - d - g + 15) % 30;
+            var i = Math.floor(c / 4);
+            var k = c % 4;
+            var l = (32 + 2 * e + 2 * i - h - k) % 7;
+            var m = Math.floor((a + 11 * h + 22 * l) / 451);
+            var month = Math.floor((h + l - 7 * m + 114) / 31) - 1;
+            var day = ((h + l - 7 * m + 114) % 31) + 1;
+            return new Date(year, month, day);
+        }
+
         // Populate dayInput options
         const dayInput = document.getElementById('dayInput');
         for(let d=1; d<=31; d++){
@@ -212,7 +172,6 @@
             opt.textContent = d;
             dayInput.appendChild(opt);
         }
-
         // Save "Things to Do" text locally
         const thingsToDoBox = document.getElementById('things-to-do');
         thingsToDoBox.value = localStorage.getItem('thingsToDo') || '';
@@ -220,7 +179,6 @@
             localStorage.setItem('thingsToDo', thingsToDoBox.value);
         });
 
-        // Get the user's birthday from localStorage, or blank/null if not set
         function getUserBirthday() {
             let stored = localStorage.getItem('userBirthdayMMDD');
             if (stored) {
@@ -231,37 +189,49 @@
                     return {month, day};
                 }
             }
-            return null; // not set, so blank
+            return null;
         }
 
-        // Custom countdowns
-        function updateEventCountdowns() {
-            const now = new Date();
-            // Christmas countdown
-            const year = now.getMonth() > 11 || (now.getMonth() === 11 && now.getDate() > 25) ? now.getFullYear() + 1 : now.getFullYear();
-            let christmas = new Date(year, 11, 25, 0, 0, 0);
+        // Returns next holiday (object: {name, date}) after now
+        function findNextHoliday(now) {
+            // For Dec 25 and after, holidays are calculated for next year
+            let thisYear = now.getFullYear();
+            let holidays = getUSHolidays(thisYear);
+            for (let i = 0; i < holidays.length; i++) {
+                // For each holiday, if its date > now, return it
+                if (holidays[i].date > now) return holidays[i];
+            }
+            // If none ahead, return the very first holiday next year
+            holidays = getUSHolidays(thisYear+1);
+            return holidays[0];
+        }
 
-            // Birthday - only show if set
+        function updateHolidayCountdowns() {
+            const eventsElem = document.getElementById('holiday-events');
+            eventsElem.innerHTML = ""; // Clear previous
+            const now = new Date();
+            // Next US holiday
+            const nextHoliday = findNextHoliday(now);
+            if (nextHoliday) {
+                let countdown = getCountdownText(nextHoliday.date, now);
+                let li = document.createElement('li');
+                li.innerHTML = `<strong>${nextHoliday.name} :</strong> ${countdown}`;
+                eventsElem.appendChild(li);
+            }
+            // Birthday
             let bday = getUserBirthday();
-            let birthdayText = "";
             if (bday) {
-                // Next occurrence
-                let birthdayYear = (now.getMonth()+1 > bday.month) || (now.getMonth()+1 === bday.month && now.getDate() > bday.day) ? now.getFullYear() + 1 : now.getFullYear();
-                let birthdayDate = new Date(birthdayYear, bday.month-1, bday.day, 0, 0, 0);
-                birthdayText = `<strong>🎂 My Birthday :</strong> ${getCountdownText(birthdayDate)}`;
-            } // Else, stays blank
-
-            // End of School
-            let schoolEndYear = now.getMonth() > 4 || (now.getMonth() === 4 && now.getDate() > 21) ? now.getFullYear() + 1 : now.getFullYear();
-            let schoolEnd = new Date(schoolEndYear, 4, 21, 0, 0, 0);
-
-            document.getElementById('christmas-countdown').innerHTML = `<strong>🎄 Christmas :</strong> ${getCountdownText(christmas)}`;
-            document.getElementById('birthday-countdown').innerHTML = birthdayText;
-            document.getElementById('schoolend-countdown').innerHTML = `<strong>🏫 End of School :</strong> ${getCountdownText(schoolEnd)}`;
+                let bYear = (now.getMonth()+1 > bday.month) || (now.getMonth()+1 === bday.month && now.getDate() > bday.day) ? now.getFullYear() + 1 : now.getFullYear();
+                let birthdayDate = new Date(bYear, bday.month - 1, bday.day, 0, 0, 0);
+                let countdown = getCountdownText(birthdayDate, now);
+                let li = document.createElement('li');
+                li.innerHTML = `<strong>🎂 My Birthday :</strong> ${countdown}`;
+                eventsElem.appendChild(li);
+            }
         }
-
-        function getCountdownText(targetDate) {
-            const now = new Date();
+        // Countdown text
+        function getCountdownText(targetDate, currentDate = null) {
+            const now = currentDate || new Date();
             let diff = targetDate - now;
             if (diff < 0) return "Passed!";
             let days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -271,8 +241,8 @@
             return `${days} days, ${hours} hours, ${mins} mins, ${secs} secs`;
         }
 
-        setInterval(updateEventCountdowns, 1000);
-        updateEventCountdowns();
+        setInterval(updateHolidayCountdowns, 1000);
+        updateHolidayCountdowns();
 
         // Popup controls for background and birthday
         const bgPopup = document.getElementById('bgPopup');
@@ -297,7 +267,6 @@
             bgPopup.style.display = "none";
         }
         function showBirthdayPopup() {
-            // Set dropdowns to stored value or blank
             let raw = localStorage.getItem('userBirthdayMMDD');
             if (raw) {
                 let parts = raw.split('-');
@@ -363,12 +332,12 @@
             let mmdd = `${monthInput.value}-${dayInput.value}`;
             localStorage.setItem('userBirthdayMMDD', mmdd);
             hideBirthdayPopup();
-            updateEventCountdowns();
+            updateHolidayCountdowns();
         });
         birthdayCancel.addEventListener('click', () => {
-            localStorage.removeItem('userBirthdayMMDD'); // clear!
+            localStorage.removeItem('userBirthdayMMDD');
             hideBirthdayPopup();
-            updateEventCountdowns();
+            updateHolidayCountdowns();
         });
 
         monthInput.addEventListener('keydown', function(e){
