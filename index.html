@@ -7,9 +7,37 @@
     <link rel="icon" type="image/png" href="https://cdn.bio.link/uploads/profilealso_pictures/2025-04-23/KIyjnGulLHDzGoQ4C7CxfjLZ15tSoAAO.png">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; padding: 0; height: 100vh; display: flex; flex-direction: column; background: #eaeaea;
-        background-size: cover; background-position: center; background-repeat: no-repeat; transition: background-image 0.4s; }
-        iframe { border: none; width: 200px; flex: 1; }
+        body { 
+            margin: 0; 
+            padding: 0; 
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            background: #eaeaea;
+            background-size: cover; 
+            background-position: center; 
+            background-repeat: no-repeat; 
+            transition: background-image 0.4s; 
+        }
+        #bio-link-sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 200px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: transparent;
+            z-index: 900;
+        }
+        iframe.bio-link {
+            border: none;
+            width: 100%;
+            height: 100%;
+            display: block;
+            flex: 1;
+        }
         #countdown { position: fixed; top: 20px; right: 20px; background-color: #f0f8ff; border: 2px solid #3498db;
         border-radius: 15px; padding: 10px 20px; font-family: 'Quicksand', Arial, sans-serif; font-size: 14px; color: #333;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); z-index: 1000; text-align: center;}
@@ -19,27 +47,34 @@
         #event-countdowns { position: fixed; bottom: 20px; right: 20px; width: 250px; background-color: #f8f9fa;
         border: 2px solid #e67e22; border-radius: 15px; padding: 16px 18px; font-family: 'Quicksand', Arial, sans-serif;
         font-size: 15px; color: #333; box-shadow: 0 4px 6px rgba(0,0,0,0.08); z-index: 1000;}
-        #event-countdowns h3 { margin: 0 0 10px 0; font-size: 16px; color: #e67e22;}
+        #event-countdowns h3 { margin: 0 0 10px 0; font-size: 16px; color: #e67e22; cursor: pointer; transition: background 0.2s;}
+        #event-countdowns h3:hover { background: #ffe5d1; border-radius: 8px;}
         #event-countdowns ul { list-style-type: none; padding-left: 0; margin: 0;}
         #event-countdowns li { margin-bottom: 8px;}
-        #bgPopup, #birthdayPopup { position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 2000;}
-        #bgPopupContent, #birthdayPopupContent { background: #fff; padding: 22px 30px 18px 30px; border-radius: 18px;
+        #bgPopup, #birthdayPopup, #eventPopup, #welcomePopup { position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 3000;}
+        #bgPopupContent, #birthdayPopupContent, #eventPopupContent, #welcomePopupContent { background: #fff; padding: 22px 30px 18px 30px; border-radius: 18px;
         box-shadow: 0 4px 24px rgba(0,0,0,0.18); text-align: center; min-width: 280px;}
-        #bgPopupContent input[type="text"], #birthdayPopupContent select { width: 95%; padding: 8px; border: 1.5px solid #3498db;
+        #bgPopupContent input[type="text"], #birthdayPopupContent select, #eventPopupContent input[type="text"], #eventPopupContent input[type="date"] { width: 95%; padding: 8px; border: 1.5px solid #3498db;
         border-radius: 8px; font-size: 15px; margin-bottom: 14px;}
-        #bgPopupContent button, #birthdayPopupContent button { background: #3498db; border: none; color: white; padding: 8px 24px;
+        #bgPopupContent button, #birthdayPopupContent button, #eventPopupContent button, #welcomePopupContent button { background: #3498db; border: none; color: white; padding: 8px 24px;
         border-radius: 8px; font-size: 15px; cursor: pointer; margin-right: 8px;}
-        #bgPopupContent button:last-child, #birthdayPopupContent button:last-child { background: #e74c3c;}
-        #change-background-button { position: fixed; left: 0px; top: 20px; z-index: 1100; padding: 10px 16px; border-radius: 8px;
-        background: #f6f6f6; border: 2px solid #3498db; font-family: 'Quicksand', Arial, sans-serif; font-size: 13px; color: #3498db;
-        cursor: pointer; transition: background 0.2s;}
-        #change-background-button:hover { background: #eaf6fb;}
+        #bgPopupContent button:last-child, #birthdayPopupContent button:last-child, #eventPopupContent button:last-child, #welcomePopupContent button:last-child { background: #e74c3c;}
+        #welcomePopupContent { padding-bottom: 30px; }
     </style>
 </head>
 <body>
-    <button id="change-background-button" title="Change background"> ⚙ Settings </button>
-
+    <!-- Welcome popup on load -->
+    <div id="welcomePopup" style="display:none;">
+        <div id="welcomePopupContent">
+            <h3>Welcome!</h3>
+            <div style="font-size:16px; color:#333; margin:10px 0;">
+                Click <strong>Upcoming Events</strong> at the bottom right to change settings.<br>
+                (Background, your birthday, and custom events!)
+            </div>
+            <button id="welcomeClose">OK</button>
+        </div>
+    </div>
     <!-- Popup for entering image link -->
     <div id="bgPopup" style="display:none;">
         <div id="bgPopupContent">
@@ -72,7 +107,6 @@
             </select>
             <select id="dayInput">
                 <option value="">Day</option>
-                <!-- Dynamically populate day options for 1-31 below -->
             </select>
             <br>
             <button id="birthdaySet">Set</button>
@@ -80,51 +114,59 @@
             <div id="birthdayError" style="color: red; font-size:12px; margin-top:10px;"></div>
         </div>
     </div>
-
+    <!-- Popup for adding a custom event -->
+    <div id="eventPopup" style="display:none;">
+        <div id="eventPopupContent">
+            <h3>Add Custom Event</h3>
+            <input type="text" id="customEventName" placeholder="Event name"/>
+            <input type="date" id="customEventDate"/>
+            <br>
+            <button id="eventAdd">Add Event</button>
+            <button id="eventCancel">Cancel</button>
+            <div id="eventError" style="color: red; font-size:12px; margin-top:10px;"></div>
+        </div>
+    </div>
     <!-- Live Date/Time -->
     <div id="countdown">Loading...</div>
     <textarea id="things-to-do" placeholder="Things to do..."></textarea>
-    <iframe class="bio-link" src="https://bio.link/alpha_jr" title="Bio Link"></iframe>
+    <!-- SIDEBAR: Make bio.link go all the way down -->
+    <div id="bio-link-sidebar">
+        <iframe class="bio-link" id="bio-link-iframe" src="https://bio.link/alpha_jr" title="Bio Link"></iframe>
+    </div>
     <div id="event-countdowns">
-        <h3>Upcoming Events</h3>
+        <h3 id="eventMenuButton" title="Click for options">Upcoming Events ▼</h3>
         <ul id="holiday-events"></ul>
     </div>
     <script>
-        // US Holiday List Generator (static for most holidays, calculated for some)
         function getUSHolidays(year) {
-            // Returns { name, date } array for US holidays (can adjust or extend)
-            // Date objects: Months are 0-based (Jan=0, Dec=11)
             const holidays = [
                 { name: "🎄 Christmas Day", date: new Date(year, 11, 25) },
                 { name: "🎉 New Year's Day", date: new Date(year + 1, 0, 1) },
-                { name: "🛑 Martin Luther King Jr Day", date: mlkDay(year + 1) }, // 3rd Monday of Jan
-                { name: "🇺🇸 Presidents Day", date: presidentsDay(year + 1) }, // 3rd Monday of Feb
+                { name: "🛑 Martin Luther King Jr Day", date: mlkDay(year + 1) },
+                { name: "🇺🇸 Presidents Day", date: presidentsDay(year + 1) },
                 { name: "🐰 Easter", date: easter(year + 1) },
-                { name: "🌷 Memorial Day", date: memorialDay(year + 1) }, // Last Monday in May
+                { name: "🌷 Memorial Day", date: memorialDay(year + 1) },
                 { name: "🎆 Independence Day", date: new Date(year + 1, 6, 4) },
-                { name: "🍁 Labor Day", date: laborDay(year + 1) }, // 1st Monday of Sept
-                { name: "🦃 Thanksgiving", date: thanksgiving(year + 1) }, // 4th Thursday of Nov
+                { name: "🍁 Labor Day", date: laborDay(year + 1) },
+                { name: "🦃 Thanksgiving", date: thanksgiving(year + 1) },
             ];
-            // For December 26-31, show Christmas for "this year"; for January 1+, show next holiday for "next year"
             return holidays;
         }
-        // Helper functions for holidays with variable date
         function mlkDay(year) {
-            return nthWeekdayOfMonth(year, 0, 1, 3); // January, Monday, 3rd
+            return nthWeekdayOfMonth(year, 0, 1, 3);
         }
         function presidentsDay(year) {
-            return nthWeekdayOfMonth(year, 1, 1, 3); // February, Monday, 3rd
+            return nthWeekdayOfMonth(year, 1, 1, 3);
         }
         function memorialDay(year) {
-            return lastWeekdayOfMonth(year, 4, 1); // May, Monday
+            return lastWeekdayOfMonth(year, 4, 1);
         }
         function laborDay(year) {
-            return nthWeekdayOfMonth(year, 8, 1, 1); // September, Monday, 1st
+            return nthWeekdayOfMonth(year, 8, 1, 1);
         }
         function thanksgiving(year) {
-            return nthWeekdayOfMonth(year, 10, 4, 4); // November, Thursday, 4th
+            return nthWeekdayOfMonth(year, 10, 4, 4);
         }
-        // General nth weekday helper
         function nthWeekdayOfMonth(year, month, weekday, n) {
             let date = new Date(year, month, 1);
             let count = 0;
@@ -138,15 +180,13 @@
             return null;
         }
         function lastWeekdayOfMonth(year, month, weekday) {
-            let date = new Date(year, month + 1, 0); // Last day of month
+            let date = new Date(year, month + 1, 0);
             while (date.getDay() !== weekday) {
                 date.setDate(date.getDate() - 1);
             }
             return date;
         }
-        // Easter calculation (computus, valid for years 1900-2099)
         function easter(year) {
-            // Anonymous Gregorian
             var a = year % 19;
             var b = Math.floor(year / 100);
             var c = year % 100;
@@ -164,7 +204,6 @@
             return new Date(year, month, day);
         }
 
-        // Populate dayInput options
         const dayInput = document.getElementById('dayInput');
         for(let d=1; d<=31; d++){
             const opt = document.createElement('option');
@@ -172,7 +211,7 @@
             opt.textContent = d;
             dayInput.appendChild(opt);
         }
-        // Save "Things to Do" text locally
+
         const thingsToDoBox = document.getElementById('things-to-do');
         thingsToDoBox.value = localStorage.getItem('thingsToDo') || '';
         thingsToDoBox.addEventListener('input', () => {
@@ -191,26 +230,32 @@
             }
             return null;
         }
-
-        // Returns next holiday (object: {name, date}) after now
         function findNextHoliday(now) {
-            // For Dec 25 and after, holidays are calculated for next year
             let thisYear = now.getFullYear();
             let holidays = getUSHolidays(thisYear);
             for (let i = 0; i < holidays.length; i++) {
-                // For each holiday, if its date > now, return it
                 if (holidays[i].date > now) return holidays[i];
             }
-            // If none ahead, return the very first holiday next year
             holidays = getUSHolidays(thisYear+1);
             return holidays[0];
         }
 
+        // -- CUSTOM EVENT STORAGE (in localStorage) --
+        function getCustomEvents() {
+            try {
+                return JSON.parse(localStorage.getItem('customEvents') || '[]');
+            } catch { return []; }
+        }
+        function addCustomEvent(name, dateStr) {
+            let evts = getCustomEvents();
+            evts.push({ name, date: dateStr });
+            localStorage.setItem('customEvents', JSON.stringify(evts));
+        }
+
         function updateHolidayCountdowns() {
             const eventsElem = document.getElementById('holiday-events');
-            eventsElem.innerHTML = ""; // Clear previous
+            eventsElem.innerHTML = "";
             const now = new Date();
-            // Next US holiday
             const nextHoliday = findNextHoliday(now);
             if (nextHoliday) {
                 let countdown = getCountdownText(nextHoliday.date, now);
@@ -218,7 +263,6 @@
                 li.innerHTML = `<strong>${nextHoliday.name} :</strong> ${countdown}`;
                 eventsElem.appendChild(li);
             }
-            // Birthday
             let bday = getUserBirthday();
             if (bday) {
                 let bYear = (now.getMonth()+1 > bday.month) || (now.getMonth()+1 === bday.month && now.getDate() > bday.day) ? now.getFullYear() + 1 : now.getFullYear();
@@ -228,8 +272,17 @@
                 li.innerHTML = `<strong>🎂 My Birthday :</strong> ${countdown}`;
                 eventsElem.appendChild(li);
             }
+            // Show all custom user events as countdowns
+            const customEvents = getCustomEvents();
+            for (let ev of customEvents) {
+                let evDate = new Date(ev.date + 'T00:00:00');
+                if (isNaN(evDate.getTime())) continue;
+                let countdown = getCountdownText(evDate, now);
+                let li = document.createElement('li');
+                li.innerHTML = `<strong>📅 ${ev.name} :</strong> ${countdown}`;
+                eventsElem.appendChild(li);
+            }
         }
-        // Countdown text
         function getCountdownText(targetDate, currentDate = null) {
             const now = currentDate || new Date();
             let diff = targetDate - now;
@@ -244,19 +297,42 @@
         setInterval(updateHolidayCountdowns, 1000);
         updateHolidayCountdowns();
 
-        // Popup controls for background and birthday
         const bgPopup = document.getElementById('bgPopup');
         const bgUrlInput = document.getElementById('bgUrlInput');
         const bgUrlSet = document.getElementById('bgUrlSet');
         const bgUrlCancel = document.getElementById('bgUrlCancel');
         const bgUrlError = document.getElementById('bgUrlError');
-        const changeBackgroundButton = document.getElementById('change-background-button');
         const birthdayPopup = document.getElementById('birthdayPopup');
         const monthInput = document.getElementById('monthInput');
         const birthdaySet = document.getElementById('birthdaySet');
         const birthdayCancel = document.getElementById('birthdayCancel');
         const birthdayError = document.getElementById('birthdayError');
+        const eventMenuButton = document.getElementById('eventMenuButton');
+        const eventPopup = document.getElementById('eventPopup');
+        const eventPopupContent = document.getElementById('eventPopupContent');
+        const customEventName = document.getElementById('customEventName');
+        const customEventDate = document.getElementById('customEventDate');
+        const eventAdd = document.getElementById('eventAdd');
+        const eventCancel = document.getElementById('eventCancel');
+        const eventError = document.getElementById('eventError');
 
+        // Welcome popup logic
+        const welcomePopup = document.getElementById('welcomePopup');
+        const welcomeClose = document.getElementById('welcomeClose');
+        function showWelcomePopup() {
+            welcomePopup.style.display = "flex";
+        }
+        function hideWelcomePopup() {
+            welcomePopup.style.display = "none";
+        }
+        welcomeClose.addEventListener('click', hideWelcomePopup);
+
+        // Show welcome popup on load
+        window.addEventListener('DOMContentLoaded', () => {
+            showWelcomePopup();
+        });
+
+        // Show popups
         function showBgPopup(defaultUrl = '') {
             bgUrlInput.value = defaultUrl;
             bgUrlError.textContent = '';
@@ -285,23 +361,33 @@
         function hideBirthdayPopup() {
             birthdayPopup.style.display = "none";
         }
+        function showEventPopup() {
+            customEventName.value = "";
+            customEventDate.value = "";
+            eventError.textContent = "";
+            eventPopup.style.display = "flex";
+            customEventName.focus();
+        }
+        function hideEventPopup() {
+            eventPopup.style.display = "none";
+        }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            let bg = localStorage.getItem('customBgImg');
-            let bday = localStorage.getItem('userBirthdayMMDD');
-            if (!bg) {
-                showBgPopup('');
-            } else {
-                document.body.style.backgroundImage = `url('${bg}')`;
-                if (!bday) showBirthdayPopup();
+        // Main menu for "Upcoming Events"
+        eventMenuButton.addEventListener('click', function() {
+            let menu = prompt(
+                "Type:\n1 for Change Background\n2 for Set Birthday\n3 for Add Event",
+                "1"
+            );
+            if (menu == "1") {
+                showBgPopup(localStorage.getItem('customBgImg') || '');
+            } else if (menu == "2") {
+                showBirthdayPopup();
+            } else if (menu == "3") {
+                showEventPopup();
             }
         });
 
-        changeBackgroundButton.addEventListener('click', () => {
-            showBgPopup(localStorage.getItem('customBgImg') || '');
-        });
         bgUrlCancel.addEventListener('click', hideBgPopup);
-
         bgUrlSet.addEventListener('click', () => {
             let url = bgUrlInput.value.trim();
             if (!url) {
@@ -315,7 +401,6 @@
             document.body.style.backgroundImage = `url('${url}')`;
             localStorage.setItem('customBgImg', url);
             hideBgPopup();
-            showBirthdayPopup();
         });
 
         bgUrlInput.addEventListener('keydown', function(e){
@@ -339,7 +424,6 @@
             hideBirthdayPopup();
             updateHolidayCountdowns();
         });
-
         monthInput.addEventListener('keydown', function(e){
             if(e.key === 'Enter') {
                 birthdaySet.click();
@@ -351,7 +435,28 @@
             }
         });
 
-        // Live date/time for top clock
+        eventAdd.addEventListener('click', function() {
+            let name = customEventName.value.trim();
+            let dateStr = customEventDate.value;
+            if (!name || !dateStr) {
+                eventError.textContent = "Please enter both event name and event date!";
+                return;
+            }
+            addCustomEvent(name, dateStr);
+            hideEventPopup();
+            updateHolidayCountdowns();
+        });
+        eventCancel.addEventListener('click', function() {
+            hideEventPopup();
+        });
+
+        customEventName.addEventListener('keydown', function(e) {
+            if(e.key === 'Enter') customEventDate.focus();
+        });
+        customEventDate.addEventListener('keydown', function(e) {
+            if(e.key === 'Enter') eventAdd.click();
+        });
+
         function startClock() {
             const clockElement = document.getElementById('countdown');
             function updateClock() {
