@@ -304,7 +304,7 @@
                 let countdown = getCountdownText(evDate, now);
                 let li = document.createElement('li');
                 li.innerHTML =
-                    `<strong>📅 ${ev.name} :</strong> ${countdown} <button style="margin-left:5px;font-size:14px;" data-del-idx="${i}" title="Delete event">🗑</button>`;
+                    `<strong>📅 ${ev.name} :</strong> ${countdown} `;
                 eventsElem.appendChild(li);
             });
             // Attach delete handler for custom events
