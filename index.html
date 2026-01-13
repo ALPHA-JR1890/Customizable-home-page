@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
     <link rel="icon" type="image/png" href="ALPHA_works_logo.png">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body { 
@@ -52,7 +53,17 @@
         #event-countdowns ul { list-style-type: none; padding-left: 0; margin: 0;}
         #event-countdowns li { margin-bottom: 8px;}
         /* drop-down bar styles */
-        .dropdown { position: absolute; right: 18px; bottom: calc(100% + 8px); background: #fff; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 6px 18px rgba(0,0,0,0.12); min-width: 220px; overflow: hidden; z-index: 1200; }
+        .dropdown {
+          position: absolute;
+          right: 18px;
+          bottom: calc(100% + 8px);
+          background: #fff;
+          border: 1px solid #ddd;
+          border-radius: 10px;
+          box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+          min-width: 220px;
+          z-index: 2000;
+        }
         .dropdown-item { padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f1f1f1; color:#333; background: #fff; text-align:left; }
         .dropdown-item:last-child { border-bottom: none; }
         .dropdown-item:hover { background: #f6f9ff; color: #000; }
@@ -76,40 +87,48 @@
 
         /* preview styles for background chooser */
         #bgPreview { max-width: 220px; max-height: 120px; border-radius: 8px; margin: 8px auto 0 auto; display: none; object-fit: cover; border:1px solid #eee; }
+
+        /* small responsive adjustments */
+        @media (max-width: 640px) {
+            #bio-link-sidebar { display: none; } /* hide sidebar on small screens */
+            #things-to-do { right: 12px; top: 90px; width: 160px; }
+            #countdown { right: 12px; top: 12px; padding: 8px 12px; }
+            #event-countdowns { right: 12px; bottom: 12px; width: 220px; padding: 12px; }
+        }
     </style>
 </head>
 <body>
     <!-- Welcome popup on load -->
-    <div id="welcomePopup" class="overlay" style="display:none;">
-        <div id="welcomePopupContent" class="modal">
-            <h3>Welcome!</h3>
+    <div id="welcomePopup" class="overlay" role="dialog" aria-modal="true" style="display:none;">
+        <div id="welcomePopupContent" class="modal" tabindex="-1">
+            <h3 id="welcomeTitle">Welcome!</h3>
             <div style="font-size:16px; color:#333; margin:10px 0;">
                 Click <strong>Upcoming Events</strong> at the bottom right to open the menu.<br>
                 (Change background, set birthday, add/manage custom events)
             </div>
             <div class="row">
-                <button id="welcomeClose">OK</button>
+                <button type="button" id="welcomeClose">OK</button>
             </div>
         </div>
     </div>
 
     <!-- Manage events popup (lists custom events with delete) -->
-    <div id="manageEventsPopup" class="overlay" style="display:none;">
-        <div id="manageEventsPopupContent" class="modal">
+    <div id="manageEventsPopup" class="overlay" role="dialog" aria-modal="true" style="display:none;">
+        <div id="manageEventsPopupContent" class="modal" tabindex="-1">
             <h3>Manage Events</h3>
             <div id="manageEventsContainer" style="margin-top:10px;">
                 <ul id="manage-events-list"></ul>
                 <div id="no-custom-events" class="muted" style="display:none;">No custom events saved.</div>
             </div>
             <div class="row" style="margin-top:12px;">
-                <button id="manageEventsClose" class="small">Close</button>
+                <button type="button" id="manageEventsClose" class="small">Close</button>
             </div>
         </div>
     </div>
 
     <!-- Popup for choosing background: upload or link -->
-    <div id="bgPopup" class="overlay" style="display:none;">
-        <div id="bgPopupContent" class="modal">
+    <div id="bgPopup" class="overlay" role="dialog" aria-modal="true" style="display:none;">
+        <div id="bgPopupContent" class="modal" tabindex="-1">
             <h3>Choose Background Image</h3>
 
             <!-- Upload -->
@@ -117,7 +136,7 @@
                 <div style="font-weight:600; margin-bottom:6px;">Upload image</div>
                 <input type="file" id="bgFileInput" accept="image/*" style="display:none;">
                 <div class="row">
-                    <button id="bgUploadBtn" class="small">Upload Image</button>
+                    <button type="button" id="bgUploadBtn" class="small">Upload Image</button>
                     <div class="muted" style="align-self:center; font-size:13px;">(PNG, JPG, GIF)</div>
                 </div>
                 <img id="bgPreview" alt="preview"/>
@@ -130,8 +149,8 @@
                 <div style="font-weight:600; margin-bottom:6px;">Or use image link</div>
                 <input type="text" id="bgUrlInput" placeholder="Enter image link here..." />
                 <div class="row">
-                    <button id="bgUrlSet">Set Link</button>
-                    <button id="bgUrlCancel" class="danger">Cancel</button>
+                    <button type="button" id="bgUrlSet">Set Link</button>
+                    <button type="button" id="bgUrlCancel" class="danger">Cancel</button>
                 </div>
                 <div id="bgUrlError" style="color: red; font-size:12px; margin-top:10px;"></div>
             </div>
@@ -141,8 +160,8 @@
     </div>
 
     <!-- Popup for entering birthday MONTH and DAY only -->
-    <div id="birthdayPopup" class="overlay" style="display:none;">
-        <div id="birthdayPopupContent" class="modal">
+    <div id="birthdayPopup" class="overlay" role="dialog" aria-modal="true" style="display:none;">
+        <div id="birthdayPopupContent" class="modal" tabindex="-1">
             <h3>Enter Your Birthday</h3>
             <select id="monthInput">
                 <option value="">Month</option>
@@ -163,24 +182,38 @@
                 <option value="">Day</option>
             </select>
             <div class="row">
-                <button id="birthdaySet">Set</button>
-                <button id="birthdayCancel" class="danger">Skip</button>
+                <button type="button" id="birthdaySet">Set</button>
+                <button type="button" id="birthdayCancel" class="danger">Skip</button>
             </div>
             <div id="birthdayError" style="color: red; font-size:12px; margin-top:10px;"></div>
         </div>
     </div>
 
     <!-- Popup for adding a custom event -->
-    <div id="eventPopup" class="overlay" style="display:none;">
-        <div id="eventPopupContent" class="modal">
+    <div id="eventPopup" class="overlay" role="dialog" aria-modal="true" style="display:none;">
+        <div id="eventPopupContent" class="modal" tabindex="-1">
             <h3>Add Custom Event</h3>
             <input type="text" id="customEventName" placeholder="Event name"/>
             <input type="date" id="customEventDate"/>
             <div class="row">
-                <button id="eventAdd">Add Event</button>
-                <button id="eventCancel" class="danger">Cancel</button>
+                <button type="button" id="eventAdd">Add Event</button>
+                <button type="button" id="eventCancel" class="danger">Cancel</button>
             </div>
             <div id="eventError" style="color: red; font-size:12px; margin-top:10px;"></div>
+        </div>
+    </div>
+
+    <!-- Popup for embedded Google Form help -->
+    <div id="helpPopup" class="overlay" role="dialog" aria-modal="true" style="display:none;">
+        <div id="helpPopupContent" class="modal" tabindex="-1" style="max-width:900px; width:92%; padding:12px 16px;">
+            <h3>Help & Feedback</h3>
+            <div style="font-size:13px; color:#444; margin-bottom:8px;">Use the form below to send feedback or request help.</div>
+            <!-- Using your provided Google Forms short link as the iframe src.
+                 If you have the full docs.google.com embed URL you can replace the src for better reliability. -->
+            <iframe id="helpFormIframe" title="Help Form" src="" style="width:100%; height:560px; border:1px solid #e6e6e6; border-radius:8px;" loading="lazy" referrerpolicy="no-referrer"></iframe>
+            <div class="row" style="margin-top:8px;">
+                <button type="button" id="helpClose" class="small">Close</button>
+            </div>
         </div>
     </div>
 
@@ -189,18 +222,19 @@
     <textarea id="things-to-do" placeholder="Things to do..."></textarea>
     <!-- SIDEBAR: Make bio.link go all the way down -->
     <div id="bio-link-sidebar">
-        <iframe class="bio-link" id="bio-link-iframe" src="https://bio.link/alpha_jr" title="Bio Link"></iframe>
+        <iframe class="bio-link" id="bio-link-iframe" src="https://bio.link/alpha_jr" title="Bio Link" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-forms allow-scripts allow-popups"></iframe>
     </div>
 
     <div id="event-countdowns">
         <h3 id="eventMenuButton" title="Click for options">Upcoming Events ▼</h3>
         <!-- Dropdown menu (appears above this box) -->
-        <div id="settingsDropdown" class="dropdown" style="display:none;">
+        <div id="settingsDropdown" class="dropdown" style="display:none;" aria-hidden="true">
             <div class="dropdown-title">Settings</div>
-            <div class="dropdown-item" id="dd-change-bg">Change Background</div>
-            <div class="dropdown-item" id="dd-set-birthday">Set Birthday</div>
-            <div class="dropdown-item" id="dd-add-event">Add Event</div>
-            <div class="dropdown-item" id="dd-manage-events">Manage Events</div>
+            <div class="dropdown-item" id="dd-change-bg" role="button" tabindex="0">Change Background</div>
+            <div class="dropdown-item" id="dd-set-birthday" role="button" tabindex="0">Set Birthday</div>
+            <div class="dropdown-item" id="dd-add-event" role="button" tabindex="0">Add Event</div>
+            <div class="dropdown-item" id="dd-manage-events" role="button" tabindex="0">Manage Events</div>
+            <div class="dropdown-item" id="dd-help" role="button" tabindex="0">Help / Feedback</div>
         </div>
         <ul id="holiday-events"></ul>
     </div>
@@ -235,20 +269,20 @@
             return new Date(date);
         }
         function easter(year) {
-            var a = year % 19;
-            var b = Math.floor(year / 100);
-            var c = year % 100;
-            var d = Math.floor(b / 4);
-            var e = b % 4;
-            var f = Math.floor((b + 8) / 25);
-            var g = Math.floor((b - f + 1) / 3);
-            var h = (19 * a + b - d - g + 15) % 30;
-            var i = Math.floor(c / 4);
-            var k = c % 4;
-            var l = (32 + 2 * e + 2 * i - h - k) % 7;
-            var m = Math.floor((a + 11 * h + 22 * l) / 451);
-            var month = Math.floor((h + l - 7 * m + 114) / 31) - 1;
-            var day = ((h + l - 7 * m + 114) % 31) + 1;
+            const a = year % 19;
+            const b = Math.floor(year / 100);
+            const c = year % 100;
+            const d = Math.floor(b / 4);
+            const e = b % 4;
+            const f = Math.floor((b + 8) / 25);
+            const g = Math.floor((b - f + 1) / 3);
+            const h = (19 * a + b - d - g + 15) % 30;
+            const i = Math.floor(c / 4);
+            const k = c % 4;
+            const l = (32 + 2 * e + 2 * i - h - k) % 7;
+            const m = Math.floor((a + 11 * h + 22 * l) / 451);
+            const month = Math.floor((h + l - 7 * m + 114) / 31) - 1;
+            const day = ((h + l - 7 * m + 114) % 31) + 1;
             return new Date(year, month, day);
         }
 
@@ -382,7 +416,7 @@
                 let countdown = getCountdownText(evDate, now);
                 let li = document.createElement('li');
                 li.innerHTML =
-                    `<strong>📅 ${ev.name} :</strong> ${countdown} <button data-del-idx="${i}" style="margin-left:8px;padding:2px 6px;border-radius:6px;">Delete</button>`;
+                    `<strong>📅 ${ev.name} :</strong> ${countdown} <button data-del-idx="${i}" style="margin-left:8px;padding:2px 6px;border-radius:6px;" type="button">Delete</button>`;
                 eventsElem.appendChild(li);
             });
 
@@ -429,12 +463,42 @@
         const ddSetBirthday = document.getElementById('dd-set-birthday');
         const ddAddEvent = document.getElementById('dd-add-event');
         const ddManageEvents = document.getElementById('dd-manage-events');
+        const ddHelp = document.getElementById('dd-help');
+
+        const helpPopup = document.getElementById('helpPopup');
+        const helpFormIframe = document.getElementById('helpFormIframe');
+        const helpClose = document.getElementById('helpClose');
+
+        // Focus management helpers for overlays
+        function getFirstFocusable(container) {
+            if (!container) return null;
+            return container.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+        }
+        function showOverlay(overlay) {
+            if (!overlay) return;
+            // store previously active element
+            overlay.__previouslyFocused = document.activeElement;
+            overlay.style.display = 'flex';
+            overlay.querySelector('.modal')?.focus();
+            // prevent dropdown from remaining open
+            hideDropdown();
+        }
+        function hideOverlay(overlay) {
+            if (!overlay) return;
+            overlay.style.display = 'none';
+            // restore focus
+            try {
+                if (overlay.__previouslyFocused && typeof overlay.__previouslyFocused.focus === 'function') {
+                    overlay.__previouslyFocused.focus();
+                }
+            } catch(e){}
+        }
 
         // Welcome popup logic
         const welcomePopup = document.getElementById('welcomePopup');
         const welcomeClose = document.getElementById('welcomeClose');
-        function showWelcomePopup() { welcomePopup.style.display = "flex"; }
-        function hideWelcomePopup() { welcomePopup.style.display = "none"; }
+        function showWelcomePopup() { showOverlay(welcomePopup); }
+        function hideWelcomePopup() { hideOverlay(welcomePopup); }
         welcomeClose.addEventListener('click', hideWelcomePopup);
 
         // Show welcome on load
@@ -442,7 +506,7 @@
             showWelcomePopup();
         });
 
-        // Generic show/hide helpers
+        // Generic show/hide helpers for named popups
         function showBgPopup(defaultUrl = '') {
             hideDropdown();
             bgUrlInput.value = defaultUrl;
@@ -450,10 +514,10 @@
             bgPreview.style.display = 'none';
             bgPreview.src = '';
             bgFileInput.value = '';
-            bgPopup.style.display = "flex";
+            showOverlay(bgPopup);
             bgUrlInput.focus();
         }
-        function hideBgPopup() { bgPopup.style.display = "none"; }
+        function hideBgPopup() { hideOverlay(bgPopup); }
 
         function showBirthdayPopup() {
             hideDropdown();
@@ -469,20 +533,20 @@
                 dayInput.value = "";
             }
             birthdayError.textContent = '';
-            birthdayPopup.style.display = "flex";
+            showOverlay(birthdayPopup);
             monthInput.focus();
         }
-        function hideBirthdayPopup() { birthdayPopup.style.display = "none"; }
+        function hideBirthdayPopup() { hideOverlay(birthdayPopup); }
 
         function showEventPopup() {
             hideDropdown();
             customEventName.value = "";
             customEventDate.value = "";
             eventError.textContent = "";
-            eventPopup.style.display = "flex";
+            showOverlay(eventPopup);
             customEventName.focus();
         }
-        function hideEventPopup() { eventPopup.style.display = "none"; }
+        function hideEventPopup() { hideOverlay(eventPopup); }
 
         function showManageEventsPopup() {
             hideDropdown();
@@ -501,6 +565,7 @@
                     delBtn.textContent = "Delete";
                     delBtn.className = "small danger";
                     delBtn.style.padding = "4px 8px";
+                    delBtn.type = "button";
                     delBtn.onclick = () => {
                         if (confirm(`Delete "${ev.name}"?`)) {
                             removeCustomEvent(i);
@@ -513,20 +578,36 @@
                     manageEventsList.appendChild(li);
                 });
             }
-            manageEventsPopup.style.display = "flex";
+            showOverlay(manageEventsPopup);
         }
-        function hideManageEventsPopup() { manageEventsPopup.style.display = "none"; }
+        function hideManageEventsPopup() { hideOverlay(manageEventsPopup); }
+
+        // Help popup - embed Google Form (uses provided short link)
+        function showHelpPopup() {
+            hideDropdown();
+            // set src only when showing to avoid unnecessary loads
+            helpFormIframe.src = "https://forms.gle/RN2VvKyrCMixseNN8";
+            showOverlay(helpPopup);
+        }
+        function hideHelpPopup() {
+            // clear src to stop any activity when closed
+            helpFormIframe.src = "";
+            hideOverlay(helpPopup);
+        }
 
         // Dropdown toggle/close helpers
         function toggleDropdown() {
             if (settingsDropdown.style.display === "none" || settingsDropdown.style.display === "") {
                 settingsDropdown.style.display = "block";
+                settingsDropdown.setAttribute('aria-hidden', 'false');
             } else {
                 settingsDropdown.style.display = "none";
+                settingsDropdown.setAttribute('aria-hidden', 'true');
             }
         }
         function hideDropdown() {
             settingsDropdown.style.display = "none";
+            settingsDropdown.setAttribute('aria-hidden', 'true');
         }
 
         // Bind dropdown actions
@@ -538,11 +619,30 @@
         ddSetBirthday.addEventListener('click', () => showBirthdayPopup());
         ddAddEvent.addEventListener('click', () => showEventPopup());
         ddManageEvents.addEventListener('click', () => showManageEventsPopup());
+        ddHelp.addEventListener('click', () => showHelpPopup());
 
         // Close dropdown when clicking outside
         document.addEventListener('click', (e) => {
             let target = e.target;
             if (!settingsDropdown.contains(target) && target !== eventMenuButton) {
+                hideDropdown();
+            }
+        });
+
+        // Close overlays on Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                // hide any visible overlays
+                document.querySelectorAll('.overlay').forEach(ol => {
+                    if (ol.style.display === 'flex') {
+                        // special handling to clear iframe contents where applicable
+                        if (ol.id === 'helpPopup') hideHelpPopup();
+                        else ol.style.display = 'none';
+                        try {
+                            if (ol.__previouslyFocused && typeof ol.__previouslyFocused.focus === 'function') ol.__previouslyFocused.focus();
+                        } catch(e){}
+                    }
+                });
                 hideDropdown();
             }
         });
@@ -667,6 +767,8 @@
 
         manageEventsClose.addEventListener('click', hideManageEventsPopup);
 
+        helpClose.addEventListener('click', hideHelpPopup);
+
         function startClock() {
             const clockElement = document.getElementById('countdown');
             function updateClock() {
@@ -686,7 +788,9 @@
         document.querySelectorAll('.overlay').forEach(overlay => {
             overlay.addEventListener('click', (e) => {
                 if (e.target === overlay) {
-                    overlay.style.display = 'none';
+                    // special handling if help overlay - clear iframe
+                    if (overlay.id === 'helpPopup') hideHelpPopup();
+                    else overlay.style.display = 'none';
                 }
             });
         });
