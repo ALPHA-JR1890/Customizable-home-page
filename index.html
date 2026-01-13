@@ -416,7 +416,7 @@
                 let countdown = getCountdownText(evDate, now);
                 let li = document.createElement('li');
                 li.innerHTML =
-                    `<strong>📅 ${ev.name} :</strong> ${countdown} <button data-del-idx="${i}" style="margin-left:8px;padding:2px 6px;border-radius:6px;" type="button">Delete</button>`;
+                    `<strong>📅 ${ev.name} :</strong> ${countdown} `;
                 eventsElem.appendChild(li);
             });
 
