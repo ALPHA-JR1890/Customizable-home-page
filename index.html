@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
-    <!-- Favicon(s) -->
     <link rel="icon" type="image/png" href="ALPHA_works_logo.png">
-    <link rel="shortcut icon" href="ALPHA_works_logo.png">
-    <link rel="apple-touch-icon" href="ALPHA_works_logo.png">
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body { 
@@ -35,16 +32,6 @@
             background: transparent;
             z-index: 900;
         }
-        /* site logo above the iframe */
-        #siteLogo {
-            width: 48px;
-            height: 48px;
-            margin: 10px auto 6px auto;
-            border-radius: 8px;
-            object-fit: cover;
-            display: block;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.12);
-        }
         iframe.bio-link {
             border: none;
             width: 100%;
@@ -65,7 +52,7 @@
         #event-countdowns ul { list-style-type: none; padding-left: 0; margin: 0;}
         #event-countdowns li { margin-bottom: 8px;}
         /* drop-down bar styles */
-        .dropdown { position: absolute; right: 18px; bottom: calc(100% + 8px); background: #fff; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 6px 18px rgba(0,0,0,0.12); min-width: 220px;[...]
+        .dropdown { position: absolute; right: 18px; bottom: calc(100% + 8px); background: #fff; border: 1px solid #ddd; border-radius: 10px; box-shadow: 0 6px 18px rgba(0,0,0,0.12); min-width: 220px; overflow: hidden; z-index: 1200; }
         .dropdown-item { padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f1f1f1; color:#333; background: #fff; text-align:left; }
         .dropdown-item:last-child { border-bottom: none; }
         .dropdown-item:hover { background: #f6f9ff; color: #000; }
@@ -202,8 +189,6 @@
     <textarea id="things-to-do" placeholder="Things to do..."></textarea>
     <!-- SIDEBAR: Make bio.link go all the way down -->
     <div id="bio-link-sidebar">
-        <!-- Visible site logo above the bio.link iframe -->
-        <img id="siteLogo" src="ALPHA_works_logo.png" alt="ALPHA works logo" title="ALPHA works logo">
         <iframe class="bio-link" id="bio-link-iframe" src="https://bio.link/alpha_jr" title="Bio Link"></iframe>
     </div>
 
