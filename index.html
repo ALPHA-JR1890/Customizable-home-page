@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,24 +9,57 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* CSS Variables for Theme Switching */
+        :root {
+            --bg-color: #eaeaea;
+            --text-color: #333333;
+            --panel-bg: #f8f9fa;
+            --panel-border: #3498db;
+            --panel-shadow: rgba(0, 0, 0, 0.1);
+            --modal-bg: #ffffff;
+            --input-bg: #ffffff;
+
+            --input-border: #cccccc;
+            --dropdown-item-hover: #f6f9ff;
+            --muted-text: #666666;
+            --overlay-bg: rgba(0, 0, 0, 0.5);
+            --accent-orange: #e67e22;
+        }
+
+        body.dark-mode {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --panel-bg: #1e1e1e;
+            --panel-border: #2980b9;
+            --panel-shadow: rgba(0, 0, 0, 0.5);
+            --modal-bg: #252525;
+            --input-bg: #2d2d2d;
+            --input-border: #444444;
+            --dropdown-item-hover: #333333;
+            --muted-text: #aaaaaa;
+            --overlay-bg: rgba(0, 0, 0, 0.7);
+
+        }
+
         body { 
             margin: 0; 
             padding: 0; 
             height: 100vh; 
             display: flex; 
             flex-direction: column; 
-            background: #eaeaea;
+            background: var(--bg-color);
             background-size: cover; 
             background-position: center; 
             background-repeat: no-repeat; 
-            transition: background-image 0.4s; 
+            transition: background 0.4s, color 0.3s; 
             font-family: 'Quicksand', Arial, sans-serif;
+            color: var(--text-color);
         }
+
         #bio-link-sidebar {
             position: fixed;
-            left: 0;
-            top: 0;
-            bottom: 0;
+
+            left: 0; top: 0; bottom: 0;
             width: 200px;
             height: 100vh;
             display: flex;
@@ -33,64 +67,147 @@
             background: transparent;
             z-index: 900;
         }
+
         iframe.bio-link {
             border: none;
             width: 100%;
             height: 100%;
             display: block;
             flex: 1;
+            transition: filter 0.4s ease;
         }
-        #countdown { position: fixed; top: 20px; right: 20px; background-color: #f0f8ff; border: 2px solid #3498db;
-        border-radius: 15px; padding: 10px 20px; font-size: 14px; color: #333;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); z-index: 1000; text-align: center;}
-        #things-to-do { position: fixed; top: 80px; right: 20px; width: 200px; height: 200px; background-color: #fff;
-        border: 2px solid #3498db; border-radius: 10px; padding: 10px;
-        font-size: 14px; color: #333; box-shadow: 0 4px 6px rgba(0,0,0,0.1); resize: none; z-index: 1000;}
-        #event-countdowns { position: fixed; bottom: 20px; right: 20px; width: 250px; background-color: #f8f9fa;
-        border: 2px solid #e67e22; border-radius: 15px; padding: 16px 18px; font-size: 15px; color: #333; box-shadow: 0 4px 6px rgba(0,0,0,0.08); z-index: 1000;}
-        #event-countdowns h3 { margin: 0 0 10px 0; font-size: 16px; color: #e67e22; cursor: pointer; transition: background 0.2s; user-select:none;}
-        #event-countdowns h3:hover { background: #ffe5d1; border-radius: 8px;}
+
+        /* Invert the Bio Link iframe in Dark Mode */
+
+        body.dark-mode iframe.bio-link {
+            filter: invert(0.9) hue-rotate(180deg);
+        }
+
+        #countdown { 
+            position: fixed; top: 20px; right: 20px; 
+            background-color: var(--panel-bg); 
+            border: 2px solid var(--panel-border);
+            border-radius: 15px; padding: 10px 20px; 
+            font-size: 14px; color: var(--text-color);
+            box-shadow: 0 4px 6px var(--panel-shadow); 
+            z-index: 1000; text-align: center;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        #things-to-do { 
+            position: fixed; top: 80px; right: 20px; 
+            width: 200px; height: 200px; 
+            background-color: var(--input-bg);
+
+            border: 2px solid var(--panel-border); 
+            border-radius: 10px; padding: 10px;
+            font-size: 14px; color: var(--text-color); 
+            box-shadow: 0 4px 6px var(--panel-shadow); 
+            resize: none; z-index: 1000;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        #event-countdowns { 
+            position: fixed; bottom: 20px; right: 20px; 
+            width: 250px; background-color: var(--panel-bg);
+            border: 2px solid var(--accent-orange); 
+            border-radius: 15px; padding: 16px 18px; 
+            font-size: 15px; color: var(--text-color); 
+            box-shadow: 0 4px 6px var(--panel-shadow); 
+            z-index: 1000;
+            transition: background-color 0.3s;
+        }
+
+
+        #event-countdowns h3 { 
+            margin: 0 0 10px 0; font-size: 16px; 
+            color: var(--accent-orange); cursor: pointer; 
+            transition: background 0.2s; user-select:none;
+        }
+        #event-countdowns h3:hover { 
+            background: var(--dropdown-item-hover); border-radius: 8px;
+        }
+
         #event-countdowns ul { list-style-type: none; padding-left: 0; margin: 0;}
         #event-countdowns li { margin-bottom: 8px;}
-        /* drop-down bar styles */
+
+        /* Dropdown Styles */
         .dropdown {
-          position: absolute;
-          right: 18px;
-          bottom: calc(100% + 8px);
-          background: #fff;
-          border: 1px solid #ddd;
-          border-radius: 10px;
-          box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-          min-width: 220px;
-          z-index: 2000;
+            position: absolute;
+            right: 18px;
+            bottom: calc(100% + 8px);
+            background: var(--modal-bg);
+            border: 1px solid var(--input-border);
+
+            border-radius: 10px;
+            box-shadow: 0 6px 18px var(--panel-shadow);
+            min-width: 220px;
+            z-index: 2000;
+            overflow: hidden;
         }
-        .dropdown-item { padding: 10px 12px; cursor: pointer; border-bottom: 1px solid #f1f1f1; color:#333; background: #fff; text-align:left; }
+
+        .dropdown-item { 
+            padding: 10px 12px; cursor: pointer; 
+            border-bottom: 1px solid var(--input-border); 
+            color: var(--text-color); background: var(--modal-bg); 
+            text-align: left; transition: background 0.2s;
+        }
         .dropdown-item:last-child { border-bottom: none; }
-        .dropdown-item:hover { background: #f6f9ff; color: #000; }
-        .dropdown-title { font-weight:700; padding:8px 12px; border-bottom:1px solid #eee; background:#fafafa; color:#e67e22; }
-        /* popups/modal styles (shared for larger dialogs) */
-        .overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5);
-          display: flex; align-items: center; justify-content: center; z-index: 3000; }
-        .modal { background: #fff; padding: 22px 30px 18px 30px; border-radius: 18px;
-          box-shadow: 0 4px 24px rgba(0,0,0,0.18); text-align: center; min-width: 280px; max-width: 92%; }
-        .modal input[type="text"], .modal select, .modal input[type="date"] { width: 95%; padding: 8px; border: 1.5px solid #ccc;
-          border-radius: 8px; font-size: 15px; margin-bottom: 14px;}
-        .modal button { background: #3498db; border: none; color: white; padding: 8px 24px;
-          border-radius: 8px; font-size: 15px; cursor: pointer; margin-right: 8px;}
+        .dropdown-item:hover { background: var(--dropdown-item-hover); }
+
+        .dropdown-title { 
+            font-weight: 700; padding: 8px 12px; 
+            border-bottom: 1px solid var(--input-border); 
+
+            background: var(--panel-bg); color: var(--accent-orange); 
+        }
+
+        /* Modals */
+        .overlay { 
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+            background: var(--overlay-bg);
+            display: flex; align-items: center; justify-content: center; z-index: 3000; 
+        }
+
+        .modal { 
+            background: var(--modal-bg); padding: 22px 30px 18px 30px; 
+            border-radius: 18px; color: var(--text-color);
+            box-shadow: 0 4px 24px var(--panel-shadow); 
+            text-align: center; min-width: 280px; max-width: 92%; 
+        }
+
+        .modal input[type="text"], .modal select, .modal input[type="date"] { 
+            width: 95%; padding: 8px; border: 1.5px solid var(--input-border);
+
+            border-radius: 8px; font-size: 15px; margin-bottom: 14px;
+            background: var(--input-bg); color: var(--text-color);
+        }
+
+        .modal button { 
+            background: #3498db; border: none; color: white; padding: 8px 24px;
+            border-radius: 8px; font-size: 15px; cursor: pointer; margin-right: 8px;
+        }
         .modal button.danger { background: #e74c3c; }
-        .modal .small { padding:6px 12px; font-size:13px; }
-        .modal .muted { color:#666; font-size:13px; margin-top:6px;}
-        .modal .row { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-top:8px; }
-        /* manage events list */
-        #manage-events-list { list-style-type: none; padding: 0; margin: 8px 0 0 0; max-height: 240px; overflow:auto; text-align:left; }
-        #manage-events-list li { display:flex; justify-content:space-between; align-items:center; padding:6px 8px; border-bottom:1px solid #eee; }
+        .modal .muted { color: var(--muted-text); font-size: 13px; margin-top: 6px;}
 
-        /* preview styles for background chooser */
-        #bgPreview { max-width: 220px; max-height: 120px; border-radius: 8px; margin: 8px auto 0 auto; display: none; object-fit: cover; border:1px solid #eee; }
+        #manage-events-list { 
+            list-style-type: none; padding: 0; margin: 8px 0 0 0; 
+            max-height: 240px; overflow: auto; text-align: left; 
+        }
+        #manage-events-list li { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 6px 8px; border-bottom: 1px solid var(--input-border); 
+        }
 
-        /* small responsive adjustments */
+
+        #bgPreview { 
+            max-width: 220px; max-height: 120px; border-radius: 8px; 
+            margin: 8px auto 0 auto; display: none; object-fit: cover; 
+            border: 1px solid var(--input-border); 
+        }
+
         @media (max-width: 640px) {
-            #bio-link-sidebar { display: none; } /* hide sidebar on small screens */
+            #bio-link-sidebar { display: none; }
             #things-to-do { right: 12px; top: 90px; width: 160px; }
             #countdown { right: 12px; top: 12px; padding: 8px 12px; }
             #event-countdowns { right: 12px; bottom: 12px; width: 220px; padding: 12px; }
@@ -98,13 +215,14 @@
     </style>
 </head>
 <body>
-    <!-- Welcome popup on load -->
+    <!-- Popups -->
     <div id="welcomePopup" class="overlay" role="dialog" aria-modal="true" style="display:none;">
         <div id="welcomePopupContent" class="modal" tabindex="-1">
             <h3 id="welcomeTitle">Welcome!</h3>
-            <div style="font-size:16px; color:#333; margin:10px 0;">
+
+            <div style="font-size:16px; margin:10px 0;">
                 Click <strong>Upcoming Events</strong> at the bottom right to open the menu.<br>
-                (Change background, set birthday, add/manage custom events)
+                (Change background, set birthday, toggle dark mode)
             </div>
             <div class="row">
                 <button type="button" id="welcomeClose">OK</button>
@@ -112,7 +230,6 @@
         </div>
     </div>
 
-    <!-- Manage events popup (lists custom events with delete) -->
     <div id="manageEventsPopup" class="overlay" role="dialog" aria-modal="true" style="display:none;">
         <div id="manageEventsPopupContent" class="modal" tabindex="-1">
             <h3>Manage Events</h3>
@@ -121,75 +238,51 @@
                 <div id="no-custom-events" class="muted" style="display:none;">No custom events saved.</div>
             </div>
             <div class="row" style="margin-top:12px;">
-                <button type="button" id="manageEventsClose" class="small">Close</button>
+                <button type="button" id="manageEventsClose">Close</button>
+
             </div>
         </div>
     </div>
 
-    <!-- Popup for choosing background: upload or link -->
     <div id="bgPopup" class="overlay" role="dialog" aria-modal="true" style="display:none;">
         <div id="bgPopupContent" class="modal" tabindex="-1">
-            <h3>Choose Background Image</h3>
-
-            <!-- Upload -->
+            <h3>Choose Background</h3>
             <div style="margin-top:6px; text-align:left;">
-                <div style="font-weight:600; margin-bottom:6px;">Upload image</div>
                 <input type="file" id="bgFileInput" accept="image/*" style="display:none;">
-                <div class="row">
-                    <button type="button" id="bgUploadBtn" class="small">Upload Image</button>
-                    <div class="muted" style="align-self:center; font-size:13px;">(PNG, JPG, GIF)</div>
-                </div>
+                <button type="button" id="bgUploadBtn">Upload Image</button>
                 <img id="bgPreview" alt="preview"/>
             </div>
-
-            <hr style="margin:12px 0; border:none; border-top:1px solid #f0f0f0; width:90%;">
-
-            <!-- Link -->
+            <hr style="margin:12px 0; border:none; border-top:1px solid var(--input-border); width:90%;">
             <div style="margin-top:6px; text-align:left;">
-                <div style="font-weight:600; margin-bottom:6px;">Or use image link</div>
-                <input type="text" id="bgUrlInput" placeholder="Enter image link here..." />
-                <div class="row">
-                    <button type="button" id="bgUrlSet">Set Link</button>
-                    <button type="button" id="bgUrlCancel" class="danger">Cancel</button>
-                </div>
-                <div id="bgUrlError" style="color: red; font-size:12px; margin-top:10px;"></div>
+                <input type="text" id="bgUrlInput" placeholder="Enter image link..." />
+                <button type="button" id="bgUrlSet">Set Link</button>
+                <button type="button" id="bgUrlCancel" class="danger">Cancel</button>
             </div>
-
-            <div style="margin-top:10px; font-size:12px; color:#666;">Note: Uploaded images are stored locally in your browser (localStorage). Very large images may exceed storage limits.</div>
         </div>
+
     </div>
 
-    <!-- Popup for entering birthday MONTH and DAY only -->
     <div id="birthdayPopup" class="overlay" role="dialog" aria-modal="true" style="display:none;">
         <div id="birthdayPopupContent" class="modal" tabindex="-1">
             <h3>Enter Your Birthday</h3>
             <select id="monthInput">
                 <option value="">Month</option>
-                <option value="1">January</option>
-                <option value="2">February</option>
-                <option value="3">March</option>
-                <option value="4">April</option>
-                <option value="5">May</option>
-                <option value="6">June</option>
-                <option value="7">July</option>
-                <option value="8">August</option>
-                <option value="9">September</option>
-                <option value="10">October</option>
-                <option value="11">November</option>
-                <option value="12">December</option>
+                <option value="1">January</option><option value="2">February</option>
+                <option value="3">March</option><option value="4">April</option>
+                <option value="5">May</option><option value="6">June</option>
+                <option value="7">July</option><option value="8">August</option>
+                <option value="9">September</option><option value="10">October</option>
+                <option value="11">November</option><option value="12">December</option>
             </select>
-            <select id="dayInput">
-                <option value="">Day</option>
-            </select>
+            <select id="dayInput"><option value="">Day</option></select>
             <div class="row">
                 <button type="button" id="birthdaySet">Set</button>
                 <button type="button" id="birthdayCancel" class="danger">Skip</button>
             </div>
-            <div id="birthdayError" style="color: red; font-size:12px; margin-top:10px;"></div>
+
         </div>
     </div>
 
-    <!-- Popup for adding a custom event -->
     <div id="eventPopup" class="overlay" role="dialog" aria-modal="true" style="display:none;">
         <div id="eventPopupContent" class="modal" tabindex="-1">
             <h3>Add Custom Event</h3>
@@ -199,60 +292,94 @@
                 <button type="button" id="eventAdd">Add Event</button>
                 <button type="button" id="eventCancel" class="danger">Cancel</button>
             </div>
-            <div id="eventError" style="color: red; font-size:12px; margin-top:10px;"></div>
         </div>
     </div>
 
-    <!-- Popup for embedded Google Form help -->
     <div id="helpPopup" class="overlay" role="dialog" aria-modal="true" style="display:none;">
-        <div id="helpPopupContent" class="modal" tabindex="-1" style="max-width:900px; width:92%; padding:12px 16px;">
+        <div id="helpPopupContent" class="modal" style="max-width:900px; width:92%;">
             <h3>Help & Feedback</h3>
-            <div style="font-size:13px; color:#444; margin-bottom:8px;">Use the form below to send feedback or request help.</div>
-            <!-- Using your provided Google Forms short link as the iframe src.
-                 If you have the full docs.google.com embed URL you can replace the src for better reliability. -->
-            <iframe id="helpFormIframe" title="Help Form" src="" style="width:100%; height:560px; border:1px solid #e6e6e6; border-radius:8px;" loading="lazy" referrerpolicy="no-referrer"></iframe>
-            <div class="row" style="margin-top:8px;">
-                <button type="button" id="helpClose" class="small">Close</button>
-            </div>
+            <iframe id="helpFormIframe" title="Help Form" src="" style="width:100%; height:500px; border:1px solid var(--input-border); border-radius:8px;"></iframe>
+
+            <button type="button" id="helpClose">Close</button>
         </div>
     </div>
 
-    <!-- Live Date/Time -->
+    <!-- UI Elements -->
     <div id="countdown">Loading...</div>
     <textarea id="things-to-do" placeholder="Things to do..."></textarea>
-    <!-- SIDEBAR: Make bio.link go all the way down -->
+
     <div id="bio-link-sidebar">
-        <iframe class="bio-link" id="bio-link-iframe" src="https://bio.link/alpha_jr" title="Bio Link" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-forms allow-scripts allow-popups"></iframe>
+        <iframe class="bio-link" id="bio-link-iframe" src="https://bio.link/Alpha_jr" title="Bio Link" sandbox="allow-forms allow-scripts allow-popups"></iframe>
     </div>
 
     <div id="event-countdowns">
-        <h3 id="eventMenuButton" title="Click for options">Upcoming Events ▼</h3>
-        <!-- Dropdown menu (appears above this box) -->
-        <div id="settingsDropdown" class="dropdown" style="display:none;" aria-hidden="true">
+        <h3 id="eventMenuButton">Upcoming Events ▾</h3> 
+        <div id="settingsDropdown" class="dropdown" style="display:none;">
             <div class="dropdown-title">Settings</div>
-            <div class="dropdown-item" id="dd-change-bg" role="button" tabindex="0">Change Background</div>
-            <div class="dropdown-item" id="dd-set-birthday" role="button" tabindex="0">Set Birthday</div>
-            <div class="dropdown-item" id="dd-add-event" role="button" tabindex="0">Add Event</div>
-            <div class="dropdown-item" id="dd-manage-events" role="button" tabindex="0">Manage Events</div>
-            <div class="dropdown-item" id="dd-help" role="button" tabindex="0">Help / Feedback</div>
+            <div class="dropdown-item" id="dd-toggle-theme">Toggle Theme</div>
+            <div class="dropdown-item" id="dd-change-bg">Change Background</div>
+            <div class="dropdown-item" id="dd-set-birthday">Set Birthday</div>
+
+            <div class="dropdown-item" id="dd-add-event">Add Event</div>
+            <div class="dropdown-item" id="dd-manage-events">Manage Events</div>
+            <div class="dropdown-item" id="dd-help">Help / Feedback</div>
         </div>
         <ul id="holiday-events"></ul>
     </div>
 
     <script>
-        // Restore background from localStorage on page load
+        // --- THEME & SYNC LOGIC ---
+        const themeToggleBtn = document.getElementById('dd-toggle-theme');
+
+        function updateThemeUI() {
+            const isDark = document.body.classList.contains('dark-mode');
+            themeToggleBtn.textContent = isDark ? "Disable Dark Mode" : "Enable Dark Mode";
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('darkMode');
+            if (savedTheme !== null) {
+
+                if (savedTheme === 'true') document.body.classList.add('dark-mode');
+            } 
+            else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                document.body.classList.add('dark-mode');
+            }
+            updateThemeUI();
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDark);
+            updateThemeUI();
+            hideDropdown();
+        }
+
+        initTheme();
+        themeToggleBtn.onclick = toggleTheme;
+
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+            if (localStorage.getItem('darkMode') === null) {
+                if (e.matches) document.body.classList.add('dark-mode');
+                else document.body.classList.remove('dark-mode');
+                updateThemeUI();
+            }
+        });
+
+        // Restore background
         (function() {
             const bgImg = localStorage.getItem('customBgImg');
-            if(bgImg) {
-                document.body.style.backgroundImage = `url('${bgImg}')`;
-            }
+            if(bgImg) document.body.style.backgroundImage = `url('${bgImg}')`;
         })();
 
-        // --- HOLIDAYS HELPERS (fixed) ---
+        // --- HOLIDAYS & UTILS ---
         function nthWeekdayOfMonth(year, month, weekday, n) {
             let date = new Date(year, month, 1);
             let count = 0;
             while (date.getMonth() === month) {
+
                 if (date.getDay() === weekday) {
                     count++;
                     if (count === n) return new Date(date);
@@ -261,539 +388,222 @@
             }
             return null;
         }
+
         function lastWeekdayOfMonth(year, month, weekday) {
             let date = new Date(year, month + 1, 0);
-            while (date.getDay() !== weekday) {
-                date.setDate(date.getDate() - 1);
-            }
+            while (date.getDay() !== weekday) date.setDate(date.getDate() - 1);
             return new Date(date);
         }
+
         function easter(year) {
-            const a = year % 19;
-            const b = Math.floor(year / 100);
-            const c = year % 100;
-            const d = Math.floor(b / 4);
-            const e = b % 4;
-            const f = Math.floor((b + 8) / 25);
-            const g = Math.floor((b - f + 1) / 3);
-            const h = (19 * a + b - d - g + 15) % 30;
-            const i = Math.floor(c / 4);
-            const k = c % 4;
-            const l = (32 + 2 * e + 2 * i - h - k) % 7;
-            const m = Math.floor((a + 11 * h + 22 * l) / 451);
-            const month = Math.floor((h + l - 7 * m + 114) / 31) - 1;
-            const day = ((h + l - 7 * m + 114) % 31) + 1;
+            const a = year % 19, b = Math.floor(year / 100), c = year % 100;
+            const d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3);
+            const h = (19 * a + b - d - g + 15) % 30, i = Math.floor(c / 4), k = c % 4;
+
+            const l = (32 + 2 * e + 2 * i - h - k) % 7, m = Math.floor((a + 11 * h + 22 * l) / 451);
+            const month = Math.floor((h + l - 7 * m + 114) / 31) - 1, day = ((h + l - 7 * m + 114) % 31) + 1;
             return new Date(year, month, day);
         }
-
-        function mlkDay(year) { return nthWeekdayOfMonth(year, 0, 1, 3); } // third Monday of Jan
-        function presidentsDay(year) { return nthWeekdayOfMonth(year, 1, 1, 3); } // third Monday of Feb
-        function memorialDay(year) { return lastWeekdayOfMonth(year, 4, 1); } // last Monday of May
-        function laborDay(year) { return nthWeekdayOfMonth(year, 8, 1, 1); } // first Monday of Sep
-        function thanksgiving(year) { return nthWeekdayOfMonth(year, 10, 4, 4); } // fourth Thursday of Nov
 
         function getUSHolidays(year) {
             return [
                 { name: "🎉 New Year's Day", date: new Date(year, 0, 1) },
-                { name: "🛑 Martin Luther King Jr Day", date: mlkDay(year) },
-                { name: "🇺🇸 Presidents Day", date: presidentsDay(year) },
+                { name: "🛑 MLK Jr Day", date: nthWeekdayOfMonth(year, 0, 1, 3) },
+                { name: "🇺🇸 Presidents Day", date: nthWeekdayOfMonth(year, 1, 1, 3) },
                 { name: "🐰 Easter", date: easter(year) },
-                { name: "🌷 Memorial Day", date: memorialDay(year) },
+                { name: "🌷 Memorial Day", date: lastWeekdayOfMonth(year, 4, 1) },
                 { name: "🎆 Independence Day", date: new Date(year, 6, 4) },
-                { name: "🍁 Labor Day", date: laborDay(year) },
-                { name: "🦃 Thanksgiving", date: thanksgiving(year) },
+                { name: "🍁 Labor Day", date: nthWeekdayOfMonth(year, 8, 1, 1) },
+                { name: "🦃 Thanksgiving", date: nthWeekdayOfMonth(year, 10, 4, 4) },
                 { name: "🎄 Christmas Day", date: new Date(year, 11, 25) }
-            ].filter(h => h.date instanceof Date && !isNaN(h.date.getTime()));
+            ];
         }
+
 
         function findNextHoliday(now) {
-            const thisYear = now.getFullYear();
-            let holidays = getUSHolidays(thisYear).concat(getUSHolidays(thisYear + 1));
+            const year = now.getFullYear();
+            let holidays = getUSHolidays(year).concat(getUSHolidays(year + 1));
             holidays.sort((a, b) => a.date - b.date);
-            for (let i = 0; i < holidays.length; i++) {
-                if (holidays[i].date > now) return holidays[i];
-            }
-            return null;
+            return holidays.find(h => h.date > now);
         }
 
+        // Init UI
         const dayInput = document.getElementById('dayInput');
         for(let d=1; d<=31; d++){
             const opt = document.createElement('option');
-            opt.value = d;
-            opt.textContent = d;
+            opt.value = d; opt.textContent = d;
             dayInput.appendChild(opt);
         }
 
         const thingsToDoBox = document.getElementById('things-to-do');
         thingsToDoBox.value = localStorage.getItem('thingsToDo') || '';
-        thingsToDoBox.addEventListener('input', () => {
-            localStorage.setItem('thingsToDo', thingsToDoBox.value);
-        });
+        thingsToDoBox.addEventListener('input', () => localStorage.setItem('thingsToDo', thingsToDoBox.value));
 
-        function getUserBirthday() {
-            let stored = localStorage.getItem('userBirthdayMMDD');
-            if (stored) {
-                let parts = stored.split('-');
-                let month = parseInt(parts[0]);
-                let day = parseInt(parts[1]);
-                if(!isNaN(month) && !isNaN(day)) {
-                    return {month, day};
-                }
-            }
-            return null;
-        }
 
-        // -- CUSTOM EVENT STORAGE (in localStorage) --
+        // --- POPUP LOGIC ---
+        function showOverlay(ol) { ol.style.display = 'flex'; }
+        function hideOverlay(ol) { ol.style.display = 'none'; }
+        function hideDropdown() { settingsDropdown.style.display = 'none'; }
+
+        document.getElementById('eventMenuButton').onclick = (e) => {
+            e.stopPropagation();
+            settingsDropdown.style.display = settingsDropdown.style.display === 'none' ? 'block' : 'none';
+        };
+
+        document.getElementById('dd-change-bg').onclick = () => { hideDropdown(); showOverlay(document.getElementById('bgPopup')); };
+        document.getElementById('dd-set-birthday').onclick = () => { hideDropdown(); showOverlay(document.getElementById('birthdayPopup')); };
+        document.getElementById('dd-add-event').onclick = () => { hideDropdown(); showOverlay(document.getElementById('eventPopup')); };
+        document.getElementById('dd-manage-events').onclick = showManageEvents;
+        document.getElementById('dd-help').onclick = () => {
+            hideDropdown();
+            document.getElementById('helpFormIframe').src = "https://forms.gle";
+            showOverlay(document.getElementById('helpPopup'));
+        };
+
+
+        window.onclick = (e) => { if(!settingsDropdown.contains(e.target)) hideDropdown(); };
+        document.getElementById('welcomeClose').onclick = () => hideOverlay(document.getElementById('welcomePopup'));
+        document.getElementById('bgUrlCancel').onclick = () => hideOverlay(document.getElementById('bgPopup'));
+        document.getElementById('birthdayCancel').onclick = () => hideOverlay(document.getElementById('birthdayPopup'));
+        document.getElementById('eventCancel').onclick = () => hideOverlay(document.getElementById('eventPopup'));
+        document.getElementById('manageEventsClose').onclick = () => hideOverlay(document.getElementById('manageEventsPopup'));
+        document.getElementById('helpClose').onclick = () => {
+            document.getElementById('helpFormIframe').src = "";
+            hideOverlay(document.getElementById('helpPopup'));
+        };
+
+        // Storage & Events
         function getCustomEvents() {
-            try {
-                const arr = JSON.parse(localStorage.getItem('customEvents') || '[]');
-                const today = new Date();
-                today.setHours(0,0,0,0);
-                const filtered = arr.filter(ev => {
-                    const evDate = new Date(ev.date + 'T00:00:00');
-                    return evDate >= today;
-                });
-                if (filtered.length !== arr.length) localStorage.setItem('customEvents', JSON.stringify(filtered));
-                return filtered;
-            } catch { return []; }
-        }
-        function addCustomEvent(name, dateStr) {
-            let evts = getCustomEvents();
-            evts.push({ name, date: dateStr });
-            localStorage.setItem('customEvents', JSON.stringify(evts));
-        }
-        function removeCustomEvent(idx) {
-            let evts = getCustomEvents();
-            evts.splice(idx, 1);
-            localStorage.setItem('customEvents', JSON.stringify(evts));
-            updateHolidayCountdowns();
+            try { return JSON.parse(localStorage.getItem('customEvents') || '[]'); } catch { return []; }
         }
 
-        function getCountdownText(targetDate, currentDate = null) {
-            const now = currentDate || new Date();
-            let diff = targetDate - now;
-            if (diff < 0) return "Passed!";
-            let days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            let hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            let mins = Math.floor((diff / (1000 * 60)) % 60);
-            let secs = Math.floor((diff / 1000) % 60);
-            return `${days} days, ${hours} hours, ${mins} mins, ${secs} secs`;
-        }
-
-        function updateHolidayCountdowns() {
-            const eventsElem = document.getElementById('holiday-events');
-            eventsElem.innerHTML = "";
-            const now = new Date();
-
-            const nextHoliday = findNextHoliday(now);
-            if (nextHoliday) {
-                let countdown = getCountdownText(nextHoliday.date, now);
-                let li = document.createElement('li');
-                li.innerHTML = `<strong>${nextHoliday.name} :</strong> ${countdown}`;
-                eventsElem.appendChild(li);
-            } else {
-                let li = document.createElement('li');
-                li.textContent = "No upcoming holidays found.";
-                eventsElem.appendChild(li);
-            }
-
-            let bday = getUserBirthday();
-            if (bday) {
-                let thisMonth = now.getMonth() + 1;
-                let today = now.getDate();
-                let bYear = (thisMonth > bday.month) || (thisMonth === bday.month && today > bday.day) ? now.getFullYear() + 1 : now.getFullYear();
-                let birthdayDate = new Date(bYear, bday.month - 1, bday.day, 0, 0, 0);
-                let countdown = getCountdownText(birthdayDate, now);
-                let li = document.createElement('li');
-                li.innerHTML = `<strong>🎂 My Birthday :</strong> ${countdown}`;
-                eventsElem.appendChild(li);
-            }
-
-            const customEvents = getCustomEvents();
-            customEvents.forEach((ev, i) => {
-                let evDate = new Date(ev.date + 'T00:00:00');
-                if (isNaN(evDate.getTime())) return;
-                let countdown = getCountdownText(evDate, now);
-                let li = document.createElement('li');
-                li.innerHTML =
-                    `<strong> ${ev.name} :</strong> ${countdown} `;
-                eventsElem.appendChild(li);
-            });
-
-            eventsElem.querySelectorAll("button[data-del-idx]").forEach(btn => {
-                btn.onclick = function() {
-                    const idx = parseInt(btn.getAttribute("data-del-idx"));
-                    if (!isNaN(idx)) removeCustomEvent(idx);
-                };
-            });
-        }
-
-        setInterval(updateHolidayCountdowns, 1000);
-        updateHolidayCountdowns();
-
-        // --- Elements for popups ---
-        const bgPopup = document.getElementById('bgPopup');
-        const bgFileInput = document.getElementById('bgFileInput');
-        const bgUploadBtn = document.getElementById('bgUploadBtn');
-        const bgPreview = document.getElementById('bgPreview');
-        const bgUrlInput = document.getElementById('bgUrlInput');
-        const bgUrlSet = document.getElementById('bgUrlSet');
-        const bgUrlCancel = document.getElementById('bgUrlCancel');
-        const bgUrlError = document.getElementById('bgUrlError');
-        const birthdayPopup = document.getElementById('birthdayPopup');
-        const monthInput = document.getElementById('monthInput');
-        const birthdaySet = document.getElementById('birthdaySet');
-        const birthdayCancel = document.getElementById('birthdayCancel');
-        const birthdayError = document.getElementById('birthdayError');
-        const eventPopup = document.getElementById('eventPopup');
-        const customEventName = document.getElementById('customEventName');
-        const customEventDate = document.getElementById('customEventDate');
-        const eventAdd = document.getElementById('eventAdd');
-        const eventCancel = document.getElementById('eventCancel');
-        const eventError = document.getElementById('eventError');
-
-        const manageEventsPopup = document.getElementById('manageEventsPopup');
-        const manageEventsClose = document.getElementById('manageEventsClose');
-        const manageEventsList = document.getElementById('manage-events-list');
-        const noCustomEventsEl = document.getElementById('no-custom-events');
-
-        const settingsDropdown = document.getElementById('settingsDropdown');
-        const eventMenuButton = document.getElementById('eventMenuButton');
-        const ddChangeBg = document.getElementById('dd-change-bg');
-        const ddSetBirthday = document.getElementById('dd-set-birthday');
-        const ddAddEvent = document.getElementById('dd-add-event');
-        const ddManageEvents = document.getElementById('dd-manage-events');
-        const ddHelp = document.getElementById('dd-help');
-
-        const helpPopup = document.getElementById('helpPopup');
-        const helpFormIframe = document.getElementById('helpFormIframe');
-        const helpClose = document.getElementById('helpClose');
-
-        // Focus management helpers for overlays
-        function getFirstFocusable(container) {
-            if (!container) return null;
-            return container.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
-        }
-        function showOverlay(overlay) {
-            if (!overlay) return;
-            // store previously active element
-            overlay.__previouslyFocused = document.activeElement;
-            overlay.style.display = 'flex';
-            overlay.querySelector('.modal')?.focus();
-            // prevent dropdown from remaining open
+        function showManageEvents() {
             hideDropdown();
-        }
-        function hideOverlay(overlay) {
-            if (!overlay) return;
-            overlay.style.display = 'none';
-            // restore focus
-            try {
-                if (overlay.__previouslyFocused && typeof overlay.__previouslyFocused.focus === 'function') {
-                    overlay.__previouslyFocused.focus();
-                }
-            } catch(e){}
-        }
+            const list = document.getElementById('manage-events-list');
 
-        // Welcome popup logic
-        const welcomePopup = document.getElementById('welcomePopup');
-        const welcomeClose = document.getElementById('welcomeClose');
-        function showWelcomePopup() { showOverlay(welcomePopup); }
-        function hideWelcomePopup() { hideOverlay(welcomePopup); }
-        welcomeClose.addEventListener('click', hideWelcomePopup);
-
-        // Show welcome on load
-        window.addEventListener('DOMContentLoaded', () => {
-            showWelcomePopup();
-        });
-
-        // Generic show/hide helpers for named popups
-        function showBgPopup(defaultUrl = '') {
-            hideDropdown();
-            bgUrlInput.value = defaultUrl;
-            bgUrlError.textContent = '';
-            bgPreview.style.display = 'none';
-            bgPreview.src = '';
-            bgFileInput.value = '';
-            showOverlay(bgPopup);
-            bgUrlInput.focus();
-        }
-        function hideBgPopup() { hideOverlay(bgPopup); }
-
-        function showBirthdayPopup() {
-            hideDropdown();
-            let raw = localStorage.getItem('userBirthdayMMDD');
-            if (raw) {
-                let parts = raw.split('-');
-                if(parts.length === 2) {
-                    monthInput.value = parts[0];
-                    dayInput.value = parts[1];
-                }
-            } else {
-                monthInput.value = "";
-                dayInput.value = "";
-            }
-            birthdayError.textContent = '';
-            showOverlay(birthdayPopup);
-            monthInput.focus();
-        }
-        function hideBirthdayPopup() { hideOverlay(birthdayPopup); }
-
-        function showEventPopup() {
-            hideDropdown();
-            customEventName.value = "";
-            customEventDate.value = "";
-            eventError.textContent = "";
-            showOverlay(eventPopup);
-            customEventName.focus();
-        }
-        function hideEventPopup() { hideOverlay(eventPopup); }
-
-        function showManageEventsPopup() {
-            hideDropdown();
+            const noEv = document.getElementById('no-custom-events');
+            list.innerHTML = "";
             const evts = getCustomEvents();
-            manageEventsList.innerHTML = "";
-            if (!evts.length) {
-                noCustomEventsEl.style.display = "block";
-            } else {
-                noCustomEventsEl.style.display = "none";
+            if(!evts.length) noEv.style.display = "block";
+            else {
+                noEv.style.display = "none";
                 evts.forEach((ev, i) => {
                     const li = document.createElement('li');
-                    const left = document.createElement('div');
-                    left.textContent = `${ev.name} (${ev.date})`;
-                    const right = document.createElement('div');
-                    const delBtn = document.createElement('button');
-                    delBtn.textContent = "Delete";
-                    delBtn.className = "small danger";
-                    delBtn.style.padding = "4px 8px";
-                    delBtn.type = "button";
-                    delBtn.onclick = () => {
-                        if (confirm(`Delete "${ev.name}"?`)) {
-                            removeCustomEvent(i);
-                            showManageEventsPopup(); // re-render
-                        }
+                    li.innerHTML = `<span>${ev.name} (${ev.date})</span><button class="danger" style="padding:4px 8px; font-size:12px;">Delete</button>`;
+                    li.querySelector('button').onclick = () => {
+                        evts.splice(i, 1);
+                        localStorage.setItem('customEvents', JSON.stringify(evts));
+                        showManageEvents();
+                        updateCountdowns();
                     };
-                    right.appendChild(delBtn);
-                    li.appendChild(left);
-                    li.appendChild(right);
-                    manageEventsList.appendChild(li);
+                    list.appendChild(li);
                 });
             }
-            showOverlay(manageEventsPopup);
-        }
-        function hideManageEventsPopup() { hideOverlay(manageEventsPopup); }
+            showOverlay(document.getElementById('manageEventsPopup'));
 
-        // Help popup - embed Google Form (uses provided short link)
-        function showHelpPopup() {
-            hideDropdown();
-            // set src only when showing to avoid unnecessary loads
-            helpFormIframe.src = "https://forms.gle/RN2VvKyrCMixseNN8";
-            showOverlay(helpPopup);
-        }
-        function hideHelpPopup() {
-            // clear src to stop any activity when closed
-            helpFormIframe.src = "";
-            hideOverlay(helpPopup);
         }
 
-        // Dropdown toggle/close helpers
-        function toggleDropdown() {
-            if (settingsDropdown.style.display === "none" || settingsDropdown.style.display === "") {
-                settingsDropdown.style.display = "block";
-                settingsDropdown.setAttribute('aria-hidden', 'false');
-            } else {
-                settingsDropdown.style.display = "none";
-                settingsDropdown.setAttribute('aria-hidden', 'true');
-            }
-        }
-        function hideDropdown() {
-            settingsDropdown.style.display = "none";
-            settingsDropdown.setAttribute('aria-hidden', 'true');
-        }
-
-        // Bind dropdown actions
-        eventMenuButton.addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleDropdown();
-        });
-        ddChangeBg.addEventListener('click', () => showBgPopup(localStorage.getItem('customBgImg') || ''));
-        ddSetBirthday.addEventListener('click', () => showBirthdayPopup());
-        ddAddEvent.addEventListener('click', () => showEventPopup());
-        ddManageEvents.addEventListener('click', () => showManageEventsPopup());
-        ddHelp.addEventListener('click', () => showHelpPopup());
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            let target = e.target;
-            if (!settingsDropdown.contains(target) && target !== eventMenuButton) {
-                hideDropdown();
-            }
-        });
-
-        // Close overlays on Escape
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                // hide any visible overlays
-                document.querySelectorAll('.overlay').forEach(ol => {
-                    if (ol.style.display === 'flex') {
-                        // special handling to clear iframe contents where applicable
-                        if (ol.id === 'helpPopup') hideHelpPopup();
-                        else ol.style.display = 'none';
-                        try {
-                            if (ol.__previouslyFocused && typeof ol.__previouslyFocused.focus === 'function') ol.__previouslyFocused.focus();
-                        } catch(e){}
-                    }
-                });
-                hideDropdown();
-            }
-        });
-
-        // bg popup: upload flow
-        bgUploadBtn.addEventListener('click', () => {
-            bgFileInput.click();
-        });
-        bgFileInput.addEventListener('change', function(e) {
-            const file = e.target.files && e.target.files[0];
-            bgUrlError.textContent = '';
-            if (!file) return;
-            if (!file.type.startsWith('image/')) {
-                bgUrlError.textContent = 'Please select an image file.';
-                return;
-            }
+        // Background Logic
+        document.getElementById('bgUploadBtn').onclick = () => document.getElementById('bgFileInput').click();
+        document.getElementById('bgFileInput').onchange = (e) => {
+            const file = e.target.files[0];
+            if(!file) return;
             const reader = new FileReader();
-            reader.onload = function() {
-                const dataUrl = reader.result;
-                // preview
-                bgPreview.src = dataUrl;
-                bgPreview.style.display = 'block';
-                try {
-                    // attempt to save data URL to localStorage
-                    localStorage.setItem('customBgImg', dataUrl);
-                    document.body.style.backgroundImage = `url('${dataUrl}')`;
-                    // close popup after a short delay so user sees preview
-                    setTimeout(hideBgPopup, 600);
-                } catch (err) {
-                    // storage error (likely quota). Show preview but don't store.
-                    bgUrlError.textContent = 'Image too large to save locally. Preview shown but cannot persist.';
-                    document.body.style.backgroundImage = `url('${dataUrl}')`;
-                    setTimeout(hideBgPopup, 600);
-                }
-            };
-            reader.onerror = function() {
-                bgUrlError.textContent = 'Failed to read file.';
+            reader.onload = () => {
+                localStorage.setItem('customBgImg', reader.result);
+                document.body.style.backgroundImage = `url('${reader.result}')`;
+                hideOverlay(document.getElementById('bgPopup'));
             };
             reader.readAsDataURL(file);
-        });
+        };
+        document.getElementById('bgUrlSet').onclick = () => {
+            const url = document.getElementById('bgUrlInput').value;
+            if(url) {
+                localStorage.setItem('customBgImg', url);
 
-        // bg popup: link flow
-        bgUrlCancel.addEventListener('click', hideBgPopup);
-        bgUrlSet.addEventListener('click', () => {
-            let url = bgUrlInput.value.trim();
-            bgUrlError.textContent = '';
-            if (!url) {
-                bgUrlError.textContent = 'Please enter an image link!';
-                return;
-            }
-            if (!/^https?:\/\/.+/.test(url)) {
-                bgUrlError.textContent = 'Please enter a valid URL starting with http or https';
-                return;
-            }
-            // quick preview load check (non-blocking). We'll set background immediately.
-            const img = new Image();
-            img.onload = function() {
-                // set preview and save
-                bgPreview.src = url;
-                bgPreview.style.display = 'block';
-                try {
-                    localStorage.setItem('customBgImg', url);
-                } catch (err) {
-                    // ignore quota error for remote url (unlikely)
-                }
                 document.body.style.backgroundImage = `url('${url}')`;
-                hideBgPopup();
-            };
-            img.onerror = function() {
-                bgUrlError.textContent = 'Could not load image from that link. Check URL.';
-            };
-            img.src = url;
-        });
-        bgUrlInput.addEventListener('keydown', function(e){
-            if(e.key === 'Enter') bgUrlSet.click();
-        });
-
-        // birthday handlers
-        birthdaySet.addEventListener('click', () => {
-            if (!monthInput.value || !dayInput.value) {
-                birthdayError.textContent = 'Please select both month and day!';
-                return;
+                hideOverlay(document.getElementById('bgPopup'));
             }
-            let mmdd = `${monthInput.value}-${dayInput.value}`;
-            localStorage.setItem('userBirthdayMMDD', mmdd);
-            hideBirthdayPopup();
-            updateHolidayCountdowns();
-        });
-        birthdayCancel.addEventListener('click', () => {
-            localStorage.removeItem('userBirthdayMMDD');
-            hideBirthdayPopup();
-            updateHolidayCountdowns();
-        });
-        monthInput.addEventListener('keydown', function(e){
-            if(e.key === 'Enter') birthdaySet.click();
-        });
-        dayInput.addEventListener('keydown', function(e){
-            if(e.key === 'Enter') birthdaySet.click();
-        });
+        };
 
-        // event add handlers
-        eventAdd.addEventListener('click', function() {
-            let name = customEventName.value.trim();
-            let dateStr = customEventDate.value;
-            if (!name || !dateStr) {
-                eventError.textContent = "Please enter both event name and event date!";
-                return;
+        // Add Event & Birthday Logic
+        document.getElementById('eventAdd').onclick = () => {
+            const name = document.getElementById('customEventName').value;
+            const date = document.getElementById('customEventDate').value;
+            if(name && date) {
+                const evts = getCustomEvents();
+                evts.push({name, date});
+                localStorage.setItem('customEvents', JSON.stringify(evts));
+                hideOverlay(document.getElementById('eventPopup'));
+                updateCountdowns();
             }
-            addCustomEvent(name, dateStr);
-            hideEventPopup();
-            updateHolidayCountdowns();
-        });
-        eventCancel.addEventListener('click', function() {
-            hideEventPopup();
-        });
-        customEventName.addEventListener('keydown', function(e) {
-            if(e.key === 'Enter') customEventDate.focus();
-        });
-        customEventDate.addEventListener('keydown', function(e) {
-            if(e.key === 'Enter') eventAdd.click();
-        });
+        };
 
-        manageEventsClose.addEventListener('click', hideManageEventsPopup);
+        document.getElementById('birthdaySet').onclick = () => {
 
-        helpClose.addEventListener('click', hideHelpPopup);
+            const m = document.getElementById('monthInput').value, d = document.getElementById('dayInput').value;
+            if(m && d) {
+                localStorage.setItem('userBirthdayMMDD', `${m}-${d}`);
+                hideOverlay(document.getElementById('birthdayPopup'));
+                updateCountdowns();
+            }
+        };
+
+        // --- COUNTDOWN ENGINE ---
+        function getCDText(target) {
+            const diff = target - new Date();
+            if (diff < 0) return "Passed!";
+            const d = Math.floor(diff / 86400000), h = Math.floor((diff / 3600000) % 24), m = Math.floor((diff / 60000) % 60), s = Math.floor((diff / 1000) % 60);
+            return `${d}d ${h}h ${m}m ${s}s`;
+        }
+
+        function updateCountdowns() {
+            const list = document.getElementById('holiday-events');
+            list.innerHTML = "";
+
+            const now = new Date();
+            const holiday = findNextHoliday(now);
+            if(holiday) {
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>${holiday.name}:</strong> ${getCDText(holiday.date)}`;
+                list.appendChild(li);
+            }
+            const bdayStr = localStorage.getItem('userBirthdayMMDD');
+            if(bdayStr) {
+                const [m, d] = bdayStr.split('-').map(Number);
+                let bDate = new Date(now.getFullYear(), m-1, d);
+                if(bDate < now) bDate.setFullYear(now.getFullYear() + 1);
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>🎂 My Birthday:</strong> ${getCDText(bDate)}`;
+                list.appendChild(li);
+            }
+            getCustomEvents().forEach(ev => {
+                const li = document.createElement('li');
+                li.innerHTML = `<strong>${ev.name}:</strong> ${getCDText(new Date(ev.date + 'T00:00:00'))}`;
+
+                list.appendChild(li);
+            });
+        }
 
         function startClock() {
-            const clockElement = document.getElementById('countdown');
-            function updateClock() {
+            const el = document.getElementById('countdown');
+            setInterval(() => {
                 const now = new Date();
-                const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-                const formattedDate = now.toLocaleDateString('en-US', dateOptions);
-                const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
-                const formattedTime = now.toLocaleTimeString('en-US', timeOptions);
-                clockElement.innerHTML = `${formattedDate}<br>${formattedTime}`;
-            }
-            setInterval(updateClock, 1000);
-            updateClock();
+                el.innerHTML = `${now.toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'})}<br>${now.toLocaleTimeString()}`;
+                updateCountdowns();
+            }, 1000);
         }
-        startClock();
 
-        // Close modal overlays when clicking outside modal content
-        document.querySelectorAll('.overlay').forEach(overlay => {
-            overlay.addEventListener('click', (e) => {
-                if (e.target === overlay) {
-                    // special handling if help overlay - clear iframe
-                    if (overlay.id === 'helpPopup') hideHelpPopup();
-                    else overlay.style.display = 'none';
-                }
-            });
-        });
+        window.onload = () => {
+            if(!localStorage.getItem('welcomed')) {
+                showOverlay(document.getElementById('welcomePopup'));
+                localStorage.setItem('welcomed', 'true');
+            }
+            startClock();
+
+        };
     </script>
 </body>
 </html>
+
+
